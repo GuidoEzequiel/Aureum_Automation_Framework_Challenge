@@ -1,5 +1,5 @@
-const { $ } = require('@wdio/globals')
 const BasePage = require('./base.page');
+const { $ } = require('@wdio/globals');
 
 //sub page containing specific selectors and methods for a specific page.
 class LoginPage extends BasePage {

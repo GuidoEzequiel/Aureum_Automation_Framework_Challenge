@@ -4,49 +4,28 @@ Feature: Add to Cart
 
     Given I am on the login page
     Given I login with <username> and <password>
-    When I add an item to the cart
+    When I add the <items> to the cart
     When I proceed to the cart page
-    Then I see the item has been added to the cart correctly
+    Then the <items> should be visible in the cart
 
-    Examples:
-      | username      | password     |
-      | standard_user | secret_sauce |
+      Examples:
+        | username      | password     | items    |
+        | standard_user | secret_sauce | backpack |
 
 
-  Scenario Outline: As a user, I can checkout selected items.
+  Scenario Outline: As a user, I can complete the purchase/finish checkout for selected items.
 
     Given I am on the login page
     Given I login with <username> and <password>
-    When I add an item to the cart
+    When I add the <items> to the cart
     When I proceed to the cart page
-    Then I see the item has been added to the cart correctly
+    When I move on to the checkout
+    When I fill user information
+    When I continue the checkout
+    When I verify checkout <items>
+    When I finish checkout process
+    Then I see the order has been confirmed
 
     Examples:
-      | username      | password     |
-      | standard_user | secret_sauce |
-
-
-    Scenario Outline: As a user, I can sort inventory items by Price.
-
-    Given I am on the login page
-    Given I login with <username> and <password>
-    When I sort items by Price
-    Then I see sorted items by Price
-
-
-    Examples:
-      | username      | password     |
-      | standard_user | secret_sauce |
-
-
-    Scenario Outline: As a user, I can sort inventory items by Name.
-
-    Given I am on the login page
-    Given I login with <username> and <password>
-    When I add an item to the cart
-    When I sort items by Name
-    Then I see sorted items by Name
-
-    Examples:
-      | username      | password     |
-      | standard_user | secret_sauce |
+        | username      | password     | items                   |
+        | standard_user | secret_sauce | bikeLight,tShirt,jacket |

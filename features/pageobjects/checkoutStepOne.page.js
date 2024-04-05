@@ -1,8 +1,9 @@
-const { $ } = require('@wdio/globals')
 const BasePage = require('./base.page');
+const { $ } = require('@wdio/globals');
+
 
 //sub page containing specific selectors and methods for a specific page
-class CheckoutStepOne extends BasePage {
+class CheckoutStepOnePage extends BasePage {
 
     // Define selectors using getter methods
     get firstNameInput () {
@@ -17,7 +18,7 @@ class CheckoutStepOne extends BasePage {
         return $('#postal-code');
     }
 
-    get postalCodeInput () {
+    get continueButton () {
         return $('#continue');
     }
 
@@ -28,9 +29,9 @@ class CheckoutStepOne extends BasePage {
     }
 
     async continueWithCheckout () {
-        await this.checkoutButton.click();
+        await this.continueButton.click();
     }
 
 }
 
-module.exports = new CheckoutStepOne();
+module.exports = new CheckoutStepOnePage();

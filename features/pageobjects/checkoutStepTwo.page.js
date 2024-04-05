@@ -1,37 +1,32 @@
-const { $ } = require('@wdio/globals')
 const BasePage = require('./base.page');
+const itemSelectors = require('../utility/itemSelectors');
+const { $ } = require('@wdio/globals');
+const { expect: expectWDIO } = require('@wdio/globals');
 
 //sub page containing specific selectors and methods for a specific page
-class CheckoutStepTwo extends BasePage {
+class CheckoutStepTwoPage extends BasePage {
 
-    // Define selectors using getter methods    
-    get backpackCartItem() {
-        return $('#item_4_title_link');
-    }
-
-    get bikeLightCartItem() {
-        return $('#item_0_title_link');
-    }
-
-    get tShirtCartItem() {
-        return $('#item_1_title_link');
-    }
-
-    get jacketCartItem() {
-        return $('#item_5_title_link');
-    }
-
-    get onesieCartItem() {
-        return $('#item_2_title_link');
-    }
-
-    get redTShirtCartItem() {
-        return $('#item_3_title_link');
-    }
-    
     get finishCheckout () {
         return $('#finish');
     }
+
+    // Method to verify a items have been added correctly before chekout is finished.
+    // Creates a list of elements based on elements passed from Feature file.
+    async verifyCheckoutItems(itemsList) {
+        const items = super.splitPassedItems(itemsList);
+        for (const itemName of items) {
+            const itemElement = $(itemSelectors[itemName]);
+            if (!itemElement) {
+                throw new Error(`Element not found for item "${itemName}"`);
+            }
+            await expectWDIO(itemElement).toBeDisplayed();
+        }
+    }
+
+    async finishCheckoutProcess() {
+        await this.finishCheckout.click();
+    }
+
 }
 
-module.exports = new CheckoutStepTwo();
+module.exports = new CheckoutStepTwoPage();
