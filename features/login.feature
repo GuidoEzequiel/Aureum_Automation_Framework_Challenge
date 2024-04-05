@@ -1,12 +1,13 @@
-Feature: The Internet Guinea Pig Website
+Feature: Add to Cart
 
-  Scenario Outline: As a user, I can log into the secure area
+  Scenario Outline: As a user, I can verify an item can be added to the cart and is visible on the cart page.
 
     Given I am on the login page
-    When I login with <username> and <password>
-    Then I should see a flash message saying <message>
+    Given I login with <username> and <password>
+    When I add an item to the cart
+    When I proceed to the cart page
+    Then I see the item has been added correctly
 
     Examples:
-      | username | password             | message                        |
-      | tomsmith | SuperSecretPassword! | You logged into a secure area! |
-      | foobar   | barfoo               | Your username is invalid!      |
+      | username      | password     |
+      | standard_user | secret_sauce |
