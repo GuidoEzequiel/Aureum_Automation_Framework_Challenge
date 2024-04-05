@@ -29,8 +29,16 @@ class CartPage extends BasePage {
         return $('#item_3_title_link');
     }
 
+    get checkoutButton() {
+        return $('#checkout');
+    }
+
     async verifyItemAdded () {
         await expectWDIO(this.backpackCartItem).toBeDisplayed();
+    }
+
+    async proceedToCheckout () {
+        await this.checkoutButton.click();
     }
 
 }

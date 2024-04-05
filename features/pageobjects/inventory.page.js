@@ -48,6 +48,11 @@ class InventoryPage extends BasePage {
         await this.shoppingCartButton.click();
     }
 
+    async sortItemsBy (criteria) {
+        await this.productSortContainer.click();
+
+    }
+
 }
 
 module.exports = new InventoryPage();

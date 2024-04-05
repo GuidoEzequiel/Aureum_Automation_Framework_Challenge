@@ -24,6 +24,22 @@ Then('I proceed to the cart page', async () => {
     await InventoryPage.proceedToCart();
 });
 
-Then('I see the item has been added correctly', async () => {
+Then('I see the item has been added to the cart correctly', async () => {
     await CartPage.verifyItemAdded();
+});
+
+Then('I sort items by Price', async () => {
+    await InventoryPage.addItemToCart();
+});
+
+Then('I see sorted items by Price', async () => {
+    await InventoryPage.addItemToCart();
+});
+
+Then('I sort items by Name', async () => {
+    await InventoryPage.addItemToCart();
+});
+
+Then('I see sorted items by Name', async () => {
+    await InventoryPage.addItemToCart();
 });

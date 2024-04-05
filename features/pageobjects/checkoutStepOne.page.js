@@ -16,8 +16,20 @@ class CheckoutStepOne extends BasePage {
     get postalCodeInput () {
         return $('#postal-code');
     }
-    
 
+    get postalCodeInput () {
+        return $('#continue');
+    }
+
+    async fillUserInformation () {
+        await this.firstNameInput.setValue("FirstName");
+        await this.lastNameInput.setValue("LastName");
+        await this.postalCodeInput.setValue("1991");
+    }
+
+    async continueWithCheckout () {
+        await this.checkoutButton.click();
+    }
 
 }
 
