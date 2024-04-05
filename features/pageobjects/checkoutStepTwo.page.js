@@ -6,12 +6,13 @@ const { expect: expectWDIO } = require('@wdio/globals');
 //sub page containing specific selectors and methods for a specific page
 class CheckoutStepTwoPage extends BasePage {
 
+    // Checkout Step Two Page Locators.
     get finishCheckout () {
         return $('#finish');
     }
+    // Checkout Step Two Page Methods.
 
-    // Method to verify a items have been added correctly before chekout is finished.
-    // Creates a list of elements based on elements passed from Feature file.
+    // Verifies items have been added correctly before chekout is finished.
     async verifyCheckoutItems(itemsList) {
         const items = super.splitPassedItems(itemsList);
         for (const itemName of items) {
@@ -23,6 +24,7 @@ class CheckoutStepTwoPage extends BasePage {
         }
     }
 
+    // Proceeds on to finish checkout process.
     async finishCheckoutProcess() {
         await this.finishCheckout.click();
     }

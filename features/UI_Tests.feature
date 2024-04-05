@@ -29,3 +29,16 @@ Feature: Add to Cart
     Examples:
         | username      | password     | items                   |
         | standard_user | secret_sauce | bikeLight,tShirt,jacket |
+
+
+    Scenario Outline: As a user, I can sort inventory items by Price.
+
+    Given I am on the login page
+    Given I login with <username> and <password>
+    When I sort items by <criteria>
+    Then I see sorted items by <criteria>
+
+    Examples:
+      | username      | password     | criteria |
+      | standard_user | secret_sauce | Price    |
+      | standard_user | secret_sauce | Name     |

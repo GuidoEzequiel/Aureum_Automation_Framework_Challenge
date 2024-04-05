@@ -1,11 +1,9 @@
 const BasePage = require('./base.page');
 const { $ } = require('@wdio/globals');
 
-
-//sub page containing specific selectors and methods for a specific page
 class CheckoutStepOnePage extends BasePage {
 
-    // Define selectors using getter methods
+    // Checkout Step One Page Locators.
     get firstNameInput () {
         return $('#first-name');
     }
@@ -22,6 +20,7 @@ class CheckoutStepOnePage extends BasePage {
         return $('#continue');
     }
 
+    // Checkout Step One Page Methods.
     async fillUserInformation () {
         await this.firstNameInput.setValue("FirstName");
         await this.lastNameInput.setValue("LastName");

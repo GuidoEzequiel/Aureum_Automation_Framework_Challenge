@@ -8,6 +8,7 @@ const CheckoutStepOnePage = require('../pageobjects/checkoutStepOne.page');
 const CheckoutStepTwoPage = require('../pageobjects/checkoutStepTwo.page');
 const CheckoutCompletePage = require('../pageobjects/checkoutComplete.page');
 
+// Step definitions to connect cucumber Gherkin features to Page Object's funcitonality.
 Given('I am on the login page', async () => {
     await LoginPage.open();
 });
@@ -17,7 +18,6 @@ Given(/^I login with (\w+) and (.+)$/, async (username, password) => {
 });
 
 When(/^I add the ([^"]*) to the cart$/, async function (itemsList) {
-    console.log('itemsList:', itemsList);
     await InventoryPage.addItemsToCart(itemsList);
 });
 
@@ -26,7 +26,6 @@ When('I proceed to the cart page', async () => {
 });
 
 Then(/^the ([^"]*) should be visible in the cart$/, async function (itemsList) {
-    console.log('itemsList:', itemsList);
     await CartPage.verifyItemsAdded(itemsList);
 });
 
@@ -54,18 +53,10 @@ When('I see the order has been confirmed', async () => {
     await CheckoutCompletePage.verifyOrderSuccessful();
 });
 
-Then('I sort items by Price', async () => {
-    await InventoryPage.sortItemsBy();
+Then(/^I sort items by ([^"]*)$/, async (criteria) => {
+    await InventoryPage.sortItemsBy(criteria);
 });
 
-Then('I see sorted items by Price', async () => {
-    await InventoryPage.verifySortedItems();
-});
-
-Then('I sort items by Name', async () => {
-    await InventoryPage.sortItemsBy();
-});
-
-Then('I see sorted items by Name', async () => {
-    await InventoryPage.verifySortedItems();
+Then(/^I see sorted items by ([^"]*)$/, async (criteria) => {
+    await InventoryPage.verifySortedItems(criteria);
 });

@@ -1,5 +1,3 @@
-"# Aureum_Automation_Framework_Challenge" 
-
 # Aureum - Test Automation Framework Challenge 
 
 This repository contains an automation framework for testing purposes. 
@@ -124,10 +122,16 @@ This automation framework covers a variety of UI and API tests to validate the f
   - For each element, the function will pass that element to a provided callback function.
   - The arguments to the function are a DOM element and a callback function (that takes a DOM element as its argument).
 
+## PENDING TO IMPLEMENT:
+ - Remove console.logs
+ - Review and add Comments.
+ - Use user data from a .json file instead of hardcoding it.
+ - Encrypt credentials.
+
 ## Contact
 
-If you encounter any issues or have questions regarding the framework, feel free to contact:
+If you encounter any issues or have questions regarding the framework, feel free to contact me.
 
 **Creator:**
-Guido Ezequiel Sánchez.
+Guido Ezequiel Sánchez -
 GuidoEzequielSanchez31@gmail.com
