@@ -20,17 +20,15 @@ Feature: Petstore - Pet Tests
     Examples:
       | petId | name  | status  | responseCode |
       | 1002  | Kitty | pending | 200          |
+#      | 1002  | Kitty | pending | 405          |
 
-
-#  Scenario Outline: PUT - Update already existing pet
-#    Given a pet with <petId>
-#    When I update the pet <name> and <status>
+#  Scenario Outline: POST - Add a new pet with invalid input
+#    Given I attempt to add a new pet with <petId>, <name>, and <status>
 #    Then the response code should be <responseCode>
 #
-#    Examples:
-#      | petId | name   | status  | responseCode |
-#      | 1003 | KitKat | pending | 200          |
-
+#  Examples:
+#    | petId | name | status  | responseCode |
+#    | 1003  |      | pending | 405          |
 
 
 #  Scenario Outline: PUT - Update already existing pet

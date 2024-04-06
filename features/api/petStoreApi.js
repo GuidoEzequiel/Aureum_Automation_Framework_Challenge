@@ -3,12 +3,16 @@ const FormData = require('form-data');
 const fs = require('fs');
 const path = require('path');
 
-// Create the Axios instance only once.
+// Create the Axios instance only once
 const apiClient = axios.create({
     baseURL: 'https://petstore.swagger.io/v2',
 });
 
+let response;
+let petId;
+
 class PetStoreApi{
+
     constructor() {
         // Define base paths for different sections.
         this.petBasePath = '/pet';
@@ -56,63 +60,15 @@ class PetStoreApi{
             name,
             status
         };
+        petId = id;
         
         return await apiClient.post(this.petBasePath, petData);
-    }
-
-    async sendRequestWithWrongMethod(method, endpoint, data) {
-        try {
-            let response;
-            switch (method.toLowerCase()) {
-                case 'get':
-                    response = await apiClient.get(endpoint, { params: data });
-                    break;
-                case 'post':
-                    response = await apiClient.post(endpoint, data);
-                    break;
-                case 'put':
-                    response = await apiClient.put(endpoint, data);
-                    break;
-                case 'delete':
-                    response = await apiClient.delete(endpoint, { data: data });
-                    break;
-                // Add other methods if needed
-                default:
-                    throw new Error(`Unsupported method: ${method}`);
-            }
-            return response;
-        } catch (error) {
-            // If the server returns a response with a status code outside the 2xx range,
-            // axios will throw an error which will contain the response object.
-            if (error.response) {
-                return error.response;
-            }
-            // If the error is not due to an HTTP response, rethrow it.
-            throw error;
-        }
-    }
-
-
-    async updatePet(petData) {
-        return await apiClient.put(this.petBasePath, petData);
-    }
+     }
 
     // Method to update an existing pet.
     async updatePet(petData) {
-        try {
-            // Send a PUT request to the /pet endpoint with the petData as the body.
-            return await apiClient.put(this.petBasePath, petData);
-        } catch (error) {
-            // Handle errors appropriately.
-            if (error.response) {
-                // Return the error response from the server.
-                return error.response;
-            }
-            // If there's no response, throw the original error.
-            throw error;
-        }
+        return await apiClient.put(this.petBasePath, petData);
     }
-
 
     async findPetsByStatus(status) {
         return await apiClient.get(`${this.petBasePath}/findByStatus?status=${status}`);

@@ -130,17 +130,17 @@ This project is designed to automate testing for the Pet Store API. The API allo
 ## Implemented Endpoints
 
 - [x] `POST /pet/{petId}/uploadImage` - Uploads an image for a pet.
-- [-] `POST /pet` - Add a new pet to the store.
+- [x] `POST /pet` - Add a new pet to the store.
 
 ## Remaining Endpoints to Implement
 
 ### Pet Endpoints
 
-- [ ] `PUT /pet` - Update an existing pet.
+- [-] `PUT /pet` - Update an existing pet.
 - [ ] `GET /pet/findByStatus` - Finds Pets by status.
 - [ ] `GET /pet/findByTags` - Finds Pets by tags.
 - [ ] `GET /pet/{petId}` - Find pet by ID.
-- [ ] `POST /pet/{petId}` - Updates a pet in the store with form data.1
+- [ ] `POST /pet/{petId}` - Updates a pet in the store with form data.
 - [ ] `DELETE /pet/{petId}` - Deletes a pet.
 
 ### Store Endpoints

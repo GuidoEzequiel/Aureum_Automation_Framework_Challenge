@@ -36,41 +36,20 @@ Then('the response message should confirm the image upload', function () {
     assert.ok(this.response.statusText.includes('OK'), 'Image upload confirmation text not found in the response message');
 });
 
-When(/^I send a (.+) request to add a new pet with (.+), (.+), and (.+)$/, async function (method, id, name, status) {
+Given(/^I attempt to add a new pet with ([^"]*), ([^"]*), and ([^"]*)$/, async function (id, name, status) {
     const petData = {
         id: parseInt(id),
         name,
-        status
+        status,
+        // Assuming photoUrls is required, sends an empty array to omit the field
+        photoUrls: [],
     };
-    // Use the generic method to send the request with a specified method.
-    this.response = await this.petStoreApi.sendRequestWithWrongMethod(method, '/pet', petData);
-});
-
-
-// UPDATE -
-
-Given(/^a pet with (\d+)$/, async function (petId) {
-    // Convert petId from string to integer.
-    petId = parseInt(petId, 10);
-    
-    // Assuming there is a method to retrieve a pet by ID to check if it exists.
-    this.response = await this.petStoreApi.getPetById(petId);
-    this.petData = this.response.data; // Store the pet object for later use.
-  });
-  
-When(/^I update the pet (.+) and (.+)$/, async function (name, status) {
-    // Update the stored pet object with the new name and status.
-    this.petData.name = name;
-    this.petData.status = status;
-
-    // Send the update request with the updated pet details.
-    this.response = await this.petStoreApi.updatePet(this.pet);
-});
-
-Then(/^the response code should be (\d+)$/, function (responseCode) {
-    // Convert responseCode from string to integer.
-    responseCode = parseInt(responseCode, 10);
-
-    // Assert that the response code is as expected.
-    assert.equal(this.response.status, responseCode);
+    try {
+        response = await API.addPet(petData);
+        petId = id;
+    } catch (error) {
+        // If the API call throws an error (e.g., due to a 405 response), store the error response
+        response = error.response;
+        console.log("Response error: " + reponse);
+    }
 });
