@@ -122,11 +122,60 @@ This automation framework covers a variety of UI and API tests to validate the f
   - For each element, the function will pass that element to a provided callback function.
   - The arguments to the function are a DOM element and a callback function (that takes a DOM element as its argument).
 
+# Pet Store API Automation Project
+
+This project is designed to automate testing for the Pet Store API. The API allows for management of pet inventory, store orders, and user interactions within the Pet Store.
+
+
+## Implemented Endpoints
+
+- [x] `POST /pet/{petId}/uploadImage` - Uploads an image for a pet.
+- [-] `POST /pet` - Add a new pet to the store.
+
+## Remaining Endpoints to Implement
+
+### Pet Endpoints
+
+- [ ] `PUT /pet` - Update an existing pet.
+- [ ] `GET /pet/findByStatus` - Finds Pets by status.
+- [ ] `GET /pet/findByTags` - Finds Pets by tags.
+- [ ] `GET /pet/{petId}` - Find pet by ID.
+- [ ] `POST /pet/{petId}` - Updates a pet in the store with form data.1
+- [ ] `DELETE /pet/{petId}` - Deletes a pet.
+
+### Store Endpoints
+- [ ] `GET /store/inventory` - Returns pet inventories by status.
+- [ ] `POST /store/order` - Place an order for a pet.
+- [ ] `GET /store/order/{orderId}` - Find purchase order by ID.
+- [ ] `DELETE /store/order/{orderId}` - Delete purchase order by ID.
+
+### User Endpoints
+- [ ] `POST /user/createWithList` - Creates list of users with given input array.
+- [ ] `GET /user/{username}` - Get user by user name.
+- [ ] `PUT /user/{username}` - Update user.
+- [ ] `DELETE /user/{username}` - Delete user.
+- [ ] `GET /user/login` - Logs user into the system.
+- [ ] `GET /user/logout` - Logs out current logged in user session.
+- [ ] `POST /user/createWithArray` - Creates list of users with given input array.
+- [ ] `POST /user` - Create user.
+
 ## PENDING TO IMPLEMENT:
  - Remove console.logs
  - Review and add Comments.
  - Use user data from a .json file instead of hardcoding it.
  - Encrypt credentials.
+
+
+## Considerations:
+ - Cucumber expressions don't seem to be working with webdriver.io so Regex was used for passing parameters from the feature files.
+ - 'And' cucumber notation does not work natively with webdriver.io in the step definitions.
+ 
+ ### API Considerations
+
+- I took the deliberate decision to include scenarios with explicit HTTP method details to test negative cases since the audience for this has technical knowledge evaluating API testing proficiency.
+- This way looks more clear and directly shows how the API handles incorrect or unexpected usage.
+- In scenarios involving non-technical people I would rather take the approach to keep this logic into the steps/api methods themselves. And use a less technical languaje to communicate it's actions in business terms.
+
 
 ## Contact
 
