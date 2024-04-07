@@ -32,6 +32,22 @@ Feature: Petstore - Pet Tests
       | 1002  | KitKat | pending | 200          |
 
 
+  Scenario Outline: Find pets by different statuses
+    Given I want to find pets with the status <statuses>
+    When I search for pets by status
+    Then I should receive a list of pets with the status <statuses>
+
+    Examples:
+      | statuses            |
+      | available         |
+      | pending           |
+      | sold              |
+      | available,pending |
+      | pending,sold      |
+      | available,sold    |
+
+
+
 # Store Endpoint Tests -
 
 

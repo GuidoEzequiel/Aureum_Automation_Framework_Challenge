@@ -49,29 +49,50 @@ class PetStoreApi{
             return response;
         } catch (error) {
             // Handles error cases.
-            console.error(error);
-            throw error;
+            console.error("Error uploading pet image:", error.message);
+            return { success: false, error: error.message };
         }
     }
 
     async addPet(id, name, status) {
-        const petData = {
-            id: parseInt(id),
-            name,
-            status
-        };
-        petId = id;
+        try {
+            const petData = {
+                id: parseInt(id),
+                name: name,
+                status: status
+            };
+            petId = id;
+
+            return await apiClient.post(this.petBasePath, petData);
+        } catch (error) {
+            console.error("Error adding new pet:", error);
+            return { success: false, error: error.message };
+        }
         
-        return await apiClient.post(this.petBasePath, petData);
      }
 
     // Method to update an existing pet.
     async updatePet(petData) {
-        return await apiClient.put(this.petBasePath, petData);
+        try {
+            return await apiClient.put(this.petBasePath, petData);
+        } catch (error) {
+            console.error("Error updating pet:", error.message);
+            return { success: false, error: error.message };
+        }
     }
 
-    async findPetsByStatus(status) {
-        return await apiClient.get(`${this.petBasePath}/findByStatus?status=${status}`);
+    async findPetsByStatus(statuses) {
+        try {
+            // Enconding to avoid URL query issues.
+            const encodedStatuses = statuses.split(',').map(s => encodeURIComponent(s)).join(',');
+            const response = await apiClient.get(`${this.petBasePath}/findByStatus`, {
+                params: { status: encodedStatuses }
+            });
+            return response;
+        } catch (error) {
+            console.error("Error finding pets by status:", error);
+            return { success: false, error: error.message };
+        }
     }
 
     async findPetsByTags(tags) {

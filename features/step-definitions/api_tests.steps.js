@@ -8,6 +8,7 @@ class CustomWorld {
         this.petStoreApi = new PetStoreApi();
         this.response = null;
         this.petData = null;
+        this.petsStatuses = null;
     }
 }
 
@@ -85,4 +86,31 @@ When(/^I update the pet (.+) and (.+)$/, async function (name, status) {
         statusText: this.response.statusText,
         data: this.response.data
       }, null, 2));
+});
+
+// GET - 
+Given(/^I want to find pets with the status (.+)$/, function (statuses) {
+    this.petsStatuses = statuses;
+});
+
+When('I search for pets by status', async function () {
+    this.response = await this.petStoreApi.findPetsByStatus(this.petsStatuses);
+});
+
+Then(/^I should receive a list of pets with the status (.+)$/, function (statuses) {
+    assert.equal(this.response.status, 200, `Expected status code 200 but received ${this.response.status}`);
+    
+    // Verify that all pets in the response have the correct status
+    const expectedStatuses = statuses.split(',');
+    this.petData = this.response.data;
+
+    assert(Array.isArray(this.petData), 'Expected an array of pets');
+    
+    // If there are pets returned, check their status
+    if (this.petData.length > 0) {
+        this.petData.forEach(pet => {
+            console.log("Entry " + pet.status);
+            assert(expectedStatuses.includes(pet.status), `Expected pet status to be one of ${statuses} but received ${pet.status}`);
+        });
+    }
 });
