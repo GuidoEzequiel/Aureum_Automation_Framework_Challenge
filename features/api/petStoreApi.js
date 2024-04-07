@@ -20,7 +20,7 @@ class PetStoreApi{
         this.userBasePath = '/user';
     }
 
-    // Pet endpoints
+    // Pet endpoints.
     async uploadImage(petId, imagePath) {
         try {
             

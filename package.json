@@ -4,7 +4,6 @@
   "description": "\"# Aureum_Automation_Framework_Challenge\"",
   "main": "index.js",
   "dependencies": {
-    "@wdio/cli": "^8.35.1",
     "abort-controller": "^3.0.0",
     "agent-base": "^7.1.1",
     "ansi-escapes": "^4.3.2",
@@ -328,6 +327,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@wdio/cli": "^8.35.1",
     "@wdio/cucumber-framework": "^8.35.0",
     "@wdio/dot-reporter": "^8.32.4",
     "@wdio/junit-reporter": "^8.32.4",
