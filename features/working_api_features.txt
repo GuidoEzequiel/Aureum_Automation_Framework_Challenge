@@ -1,4 +1,3 @@
-Feature: Petstore - Endpoint Tests
 
   # Pet Endpoint Tests -
   Scenario Outline: POST - Upload an image for a pet
@@ -56,36 +55,4 @@ Feature: Petstore - Endpoint Tests
     | petId   |
     | 1001    |
     | 10      |
-
-  Scenario Outline: Update a pet's name and status using its ID
-    Given a pet with <petId>
-    And I have the new name <name> and status <status>
-    When I update the pet using form data
-    Then the response code should be <responseCode>
-
-  Examples:
-    | petId | name   | status    | responseCode |
-    | 1001  | Reptar | available | 200          |
-    | 1002  | Floki  | sold      | 200          |
-
-
-#  Scenario Outline: Attempt to find a pet using an invalid ID
-#    Given I have the pet ID <petId>
-#    When I search for the pet by ID
-#    Then I should receive an error message
-
-#  Examples:
-#    | petId      |
-#    | invalid    |
-#    | -1         |
-#    | 0          |
-
-
-# Store Endpoint Tests -
-
-
-# User Endpoint Tests -
-
-
-#  # Negative Cases -
 

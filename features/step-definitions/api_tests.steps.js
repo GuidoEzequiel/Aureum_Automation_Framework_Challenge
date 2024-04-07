@@ -22,6 +22,7 @@ class CustomWorld {
             status: "string"
         };;
         this.petsStatuses = null;
+        this.formData = null;
     }
 }
 
@@ -33,7 +34,8 @@ Given(/^I add a new pet with ([^"]*), ([^"]*), and ([^"]*)$/, async function (id
 });
 
 Then(/^the response code should be ([^"]*)$/, function (responseCode) {
-    const expectedStatusCode = parseInt(responseCode, 10);
+    const expectedStatusCode = parseInt(responseCode);
+    console.log("this.response.status: " + this.response.status);
     assert.strictEqual(this.response.status, expectedStatusCode, `Expected status code ${expectedStatusCode}, got ${this.response.status}`);
 });
 
@@ -53,15 +55,20 @@ Given(/^a pet with (\d+)$/, async function (petId) {
 
     // Assuming there is a method to retrieve a pet by ID to check if it exists.
     this.response = await this.petStoreApi.findPetById(petId);
-    
+
     // Store the pet object for later use.
     this.petData = this.response.data; 
-    
+
     // Debugging.
-    console.log("this.response:", JSON.stringify({
+    console.log("this.response.data: " + JSON.stringify(this.response.data, null, 2));
+    console.log("this.petData: " + JSON.stringify(this.petData, null, 2));
+    console.log("this.petData.id: " + JSON.stringify(this.petData.id, null, 2));
+    
+    console.log("this.response [status, statusText, data]:", JSON.stringify({
         status: this.response.status,
         statusText: this.response.statusText,
-        data: this.response.data
+        data: this.response.data,
+        id: this.response.data.id
       }, null, 2));
 });
   
@@ -118,4 +125,14 @@ Then('I should receive the pet details', function () {
     assert.equal(this.response.status, 200, `Expected status code 200 but received ${this.response.status}`);
     // Validate the pet details (additional validations can be added as needed)
     assert.equal(this.response.data.id, this.petData.id, `Expected pet ID to be ${this.petData.id} but received ${this.response.data.id}`);
+});
+
+Given(/^I have the new name (.+) and status (.+)$/, function (name, status) {
+    this.formData = { name, status };
+    console.log("this.formData: " + JSON.stringify(this.formData, null, 2));
+});
+
+When('I update the pet using form data', async function () {
+    this.response = await this.petStoreApi.updatePetWithFormData(this.petData.id, this.formData);
+    console.log("this.response: " + this.response);
 });

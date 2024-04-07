@@ -2,22 +2,33 @@ const axios = require('axios');
 const FormData = require('form-data');
 const fs = require('fs');
 const path = require('path');
+const qs = require('qs');
 
 // Create the Axios instance only once
-const apiClient = axios.create({
-    baseURL: 'https://petstore.swagger.io/v2',
-});
-
 let response;
 let petId;
 
 class PetStoreApi{
-
     constructor() {
-        // Define base paths for different sections.
+        this.baseURL = 'https://petstore.swagger.io/v2';
         this.petBasePath = '/pet';
         this.storeBasePath = '/store';
         this.userBasePath = '/user';
+
+        // Default client for JSON
+        this.jsonClient = axios.create({
+            baseURL: this.baseURL,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        // Separate client for form data
+        this.formClient = axios.create({
+            baseURL: this.baseURL,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
     }
 
     // Pet endpoints.
@@ -42,7 +53,7 @@ class PetStoreApi{
             
             // Make an HTTP POST request to the pet's uploadImage endpoint with the form data.
             // Spread the form headers into the headers object of the request.
-            const response = await apiClient.post(`${this.petBasePath}/${petId}/uploadImage`, form, {
+            const response = await this.jsonClient.post(`${this.petBasePath}/${petId}/uploadImage`, form, {
                 headers: { ...formHeaders },
             });
             
@@ -63,18 +74,17 @@ class PetStoreApi{
             };
             petId = id;
 
-            return await apiClient.post(this.petBasePath, petData);
+            return await this.jsonClient.post(this.petBasePath, petData);
         } catch (error) {
             console.error("Error adding new pet:", error);
             return { success: false, error: error.message };
         }
-        
      }
 
     // Method to update an existing pet.
     async updatePet(petData) {
         try {
-            return await apiClient.put(this.petBasePath, petData);
+            return await this.jsonClient.put(this.petBasePath, petData);
         } catch (error) {
             console.error("Error updating pet:", error.message);
             return { success: false, error: error.message };
@@ -85,7 +95,7 @@ class PetStoreApi{
         try {
             // Enconding to avoid URL query issues.
             const encodedStatuses = statuses.split(',').map(s => encodeURIComponent(s)).join(',');
-            const response = await apiClient.get(`${this.petBasePath}/findByStatus`, {
+            const response = await this.jsonClient.get(`${this.petBasePath}/findByStatus`, {
                 params: { status: encodedStatuses }
             });
             return response;
@@ -97,21 +107,28 @@ class PetStoreApi{
 
     async findPetById(petId) {
         try {
-            return await apiClient.get(`${this.petBasePath}/${petId}`);
+            return await this.jsonClient.get(`${this.petBasePath}/${petId}`);
         } catch (error) {
             console.error(`Error finding pet by ID ${petId}:`, error);
             return { success: false, error: error.message };
         }
     }
 
-    
-    async updatePetWithFormData (petId, formData) {
-        return await apiClient.post(`${this.petBasePath}/${petId}`, formData);
+    async updatePetWithFormData(petId, formData) {
+        try {
+            // Convert the formData object to URL-encoded string
+            const formBody = qs.stringify(formData);
+
+            return await this.formClient.post(`${this.petBasePath}/${petId}`, formBody);
+        } catch (error) {
+            console.error("Error updating pet with form data:", error);
+            return { success: false, error: error.message };
+        }
     }
 
     async deletePet(petId) {
         try {
-            return await apiClient.delete(`${this.petBasePath}/${petId}`);
+            return await this.jsonClient.delete(`${this.petBasePath}/${petId}`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -120,11 +137,10 @@ class PetStoreApi{
 
 
 
-
-    // Store endpoints
+    // Store endpoints.
     async getInventory() {
         try {
-            return await apiClient.get(`${this.storeBasePath}/inventory`);
+            return await this.jsonClient.get(`${this.storeBasePath}/inventory`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -133,7 +149,7 @@ class PetStoreApi{
 
     async placeOrder(orderData) {
         try {
-            return await apiClient.post(`${this.storeBasePath}/order`, orderData);
+            return await this.jsonClient.post(`${this.storeBasePath}/order`, orderData);
         } catch (error) {
             console.error(error);
             throw error;
@@ -142,7 +158,7 @@ class PetStoreApi{
 
     async getOrderById(orderId) {
         try {
-            return await apiClient.get(`${this.storeBasePath}/order/${orderId}`);
+            return await this.jsonClient.get(`${this.storeBasePath}/order/${orderId}`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -151,7 +167,7 @@ class PetStoreApi{
 
     async deleteOrder(orderId) {
         try {
-            return await apiClient.delete(`${this.storeBasePath}/order/${orderId}`);
+            return await this.jsonClient.delete(`${this.storeBasePath}/order/${orderId}`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -161,7 +177,7 @@ class PetStoreApi{
     // User endpoints
     async createUserWithList(userList) {
         try {
-            return await apiClient.post(`${this.userBasePath}/createWithList`, userList);
+            return await this.jsonClient.post(`${this.userBasePath}/createWithList`, userList);
         } catch (error) {
             console.error(error);
             throw error;
@@ -170,7 +186,7 @@ class PetStoreApi{
 
     async getUserByUsername(username) {
         try {
-            return await apiClient.get(`${this.userBasePath}/${username}`);
+            return await this.jsonClient.get(`${this.userBasePath}/${username}`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -179,7 +195,7 @@ class PetStoreApi{
 
     async updateUser(username, userData) {
         try {
-            return await apiClient.put(`${this.userBasePath}/${username}`, userData);
+            return await this.jsonClient.put(`${this.userBasePath}/${username}`, userData);
         } catch (error) {
             console.error(error);
             throw error;
@@ -188,7 +204,7 @@ class PetStoreApi{
 
     async deleteUser(username) {
         try {
-            return await apiClient.delete(`${this.userBasePath}/${username}`);
+            return await this.jsonClient.delete(`${this.userBasePath}/${username}`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -197,7 +213,7 @@ class PetStoreApi{
 
     async loginUser(username, password) {
         try {
-            return await apiClient.get(`${this.userBasePath}/login?username=${username}&password=${password}`);
+            return await this.jsonClient.get(`${this.userBasePath}/login?username=${username}&password=${password}`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -206,7 +222,7 @@ class PetStoreApi{
 
     async logoutUser() {
         try {
-            return await apiClient.get(`${this.userBasePath}/logout`);
+            return await this.jsonClient.get(`${this.userBasePath}/logout`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -215,7 +231,7 @@ class PetStoreApi{
 
     async createUserWithArray(userArray) {
         try {
-            return await apiClient.post(`${this.userBasePath}/createWithArray`, userArray);
+            return await this.jsonClient.post(`${this.userBasePath}/createWithArray`, userArray);
         } catch (error) {
             console.error(error);
             throw error;
@@ -224,7 +240,7 @@ class PetStoreApi{
 
     async createUser(userData) {
         try {
-            return await apiClient.post(this.userBasePath, userData);
+            return await this.jsonClient.post(this.userBasePath, userData);
         } catch (error) {
             console.error(error);
             throw error;
