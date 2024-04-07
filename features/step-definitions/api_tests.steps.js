@@ -7,7 +7,20 @@ class CustomWorld {
     constructor() {
         this.petStoreApi = new PetStoreApi();
         this.response = null;
-        this.petData = null;
+        this.petData = {
+            id: 0,
+            category: {
+                id: 0,
+                name: "string"
+            },
+            name: "string",
+            photoUrls: [],
+            tags: [{
+                id: 0,
+                name: "string"
+            }],
+            status: "string"
+        };;
         this.petsStatuses = null;
     }
 }
@@ -33,31 +46,13 @@ Then('the response message should confirm the image upload', function () {
     assert.ok(this.response.statusText.includes('OK'), 'Image upload confirmation text not found in the response message');
 });
 
-
 // PUT - 
 Given(/^a pet with (\d+)$/, async function (petId) {
     // Convert petId from string to integer.
-    petId = parseInt(petId, 10);
-
-    // Build data .json using petID to pass to the getPetById.
-    const petData = {
-        id: petId,
-        category: {
-            id: 0,
-            name: "string"
-        },
-        name: "doggie",
-        photoUrls: [],
-        tags: [{
-            id: 0,
-            name: "string"
-        }],
-        status: "available"
-    };
-    this.petData = petData;
+    this.petData.id = petId = parseInt(petId);
 
     // Assuming there is a method to retrieve a pet by ID to check if it exists.
-    this.response = await this.petStoreApi.getPetById(petId);
+    this.response = await this.petStoreApi.findPetById(petId);
     
     // Store the pet object for later use.
     this.petData = this.response.data; 
@@ -113,4 +108,14 @@ Then(/^I should receive a list of pets with the status (.+)$/, function (statuse
             assert(expectedStatuses.includes(pet.status), `Expected pet status to be one of ${statuses} but received ${pet.status}`);
         });
     }
+});
+
+When('I search for the pet ID', async function () {
+    this.response = await this.petStoreApi.findPetById(this.petData.id);
+});
+
+Then('I should receive the pet details', function () {
+    assert.equal(this.response.status, 200, `Expected status code 200 but received ${this.response.status}`);
+    // Validate the pet details (additional validations can be added as needed)
+    assert.equal(this.response.data.id, this.petData.id, `Expected pet ID to be ${this.petData.id} but received ${this.response.data.id}`);
 });

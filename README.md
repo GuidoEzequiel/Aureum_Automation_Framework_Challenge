@@ -42,6 +42,8 @@ To run all current tests, execute the following command:
 
 ```console
 npm run test
+
+npx wdio run ./wdio.conf.js
 ```
 
 ### Executing Reports:
@@ -126,7 +128,6 @@ This automation framework covers a variety of UI and API tests to validate the f
 
 This project is designed to automate testing for the Pet Store API. The API allows for management of pet inventory, store orders, and user interactions within the Pet Store.
 
-
 ## Implemented Endpoints
 
 - [x] `POST /pet/{petId}/uploadImage` - Uploads an image for a pet.
@@ -163,6 +164,7 @@ This project is designed to automate testing for the Pet Store API. The API allo
  - Review and add Comments.
  - Use user data from a .json file instead of hardcoding it.
  - Encrypt credentials.
+ - @tags for running different tests
 
 
 ## Considerations:

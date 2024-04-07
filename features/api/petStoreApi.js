@@ -95,14 +95,16 @@ class PetStoreApi{
         }
     }
 
-    async findPetsByTags(tags) {
-        return await apiClient.get(`${this.petBasePath}/findByTags?tags=${tags}`);
+    async findPetById(petId) {
+        try {
+            return await apiClient.get(`${this.petBasePath}/${petId}`);
+        } catch (error) {
+            console.error(`Error finding pet by ID ${petId}:`, error);
+            return { success: false, error: error.message };
+        }
     }
 
-    async getPetById(petId) {
-        return await apiClient.get(`${this.petBasePath}/${petId}`);
-    }
-
+    
     async updatePetWithFormData (petId, formData) {
         return await apiClient.post(`${this.petBasePath}/${petId}`, formData);
     }

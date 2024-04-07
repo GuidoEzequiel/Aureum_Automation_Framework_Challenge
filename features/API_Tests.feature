@@ -38,7 +38,7 @@ Feature: Petstore - Pet Tests
     Then I should receive a list of pets with the status <statuses>
 
     Examples:
-      | statuses            |
+      | statuses          |
       | available         |
       | pending           |
       | sold              |
@@ -46,6 +46,27 @@ Feature: Petstore - Pet Tests
       | pending,sold      |
       | available,sold    |
 
+
+  Scenario Outline: Find a pet using a specific ID
+    Given a pet with <petId>
+    When I search for the pet ID
+    Then I should receive the pet details
+
+  Examples:
+    | petId   |
+    | 1001    |
+    | 10      |
+    
+#  Scenario Outline: Attempt to find a pet using an invalid ID
+#    Given I have the pet ID <petId>
+#    When I search for the pet by ID
+#    Then I should receive an error message
+
+#  Examples:
+#    | petId      |
+#    | invalid    |
+#    | -1         |
+#    | 0          |
 
 
 # Store Endpoint Tests -
