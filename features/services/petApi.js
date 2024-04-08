@@ -1,6 +1,6 @@
 const FormData = require('form-data');
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
 const qs = require('qs');
 const ApiServices = require('./apiServices');
 const Environment = require('../environment/environment');
@@ -8,7 +8,7 @@ const Environment = require('../environment/environment');
 class PetApi{
     constructor() {
         this.apiServices = new ApiServices();
-        this.petURL = Environment.petApi;
+        this.petURL = Environment.petUrl;
     }
 
     // Pet endpoints.
@@ -117,6 +117,8 @@ class PetApi{
             throw error;
         }
     }
+
+
 }
 
 module.exports = PetApi;

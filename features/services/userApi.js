@@ -3,30 +3,13 @@ const FormData = require('form-data');
 const fs = require('fs');
 const path = require('path');
 const qs = require('qs');
-
-// Create the Axios instance only once
-let response;
-let petId;
+const ApiServices = require('./apiServices');
+const Environment = require('../environment/environment');
 
 class UserApi {
     constructor() {
-        this.baseURL = 'https://petstore.swagger.io/v2/user';
-
-        // Default client for JSON
-        this.jsonClient = axios.create({
-            baseURL: this.baseURL,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        // Separate client for form data
-        this.formClient = axios.create({
-            baseURL: this.baseURL,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        });
+        this.apiServices = new ApiServices();
+        this.storeUrl = Environment.userUrl;
     }
 
     // User endpoints

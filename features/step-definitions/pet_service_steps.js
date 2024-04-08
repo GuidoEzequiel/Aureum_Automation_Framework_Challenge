@@ -28,15 +28,13 @@ class CustomWorld {
 
 setWorldConstructor(CustomWorld);
 
-// POST - 
+
 Given(/^I add a new pet with ([^"]*), ([^"]*), and ([^"]*)$/, async function (id, name, status) {
     this.response = await this.petApi.addPet(id, name, status);
 });
 
 Then(/^the response code should be ([^"]*)$/, function (responseCode) {
     const expectedStatusCode = parseInt(responseCode);
-    console.log("expectedStatusCode: "+ expectedStatusCode);
-    console.log("this.response.status: "+ this.response.status);
 
     assert.strictEqual(this.response.status, expectedStatusCode, `Expected status code ${expectedStatusCode}, got ${this.response.status}`);
 });
@@ -50,8 +48,12 @@ Then('the response message should confirm the image upload', function () {
     assert.ok(this.response.statusText.includes('OK'), 'Image upload confirmation text not found in the response message');
 });
 
-// PUT - 
 Given(/^a pet with (\d+)$/, async function (petId) {
+
+    console.log("World: ");
+
+    console.log(setWorldConstructor(CustomWorld));
+
     // Convert petId from string to integer.
     this.petData.id = petId = parseInt(petId);
 
@@ -59,13 +61,10 @@ Given(/^a pet with (\d+)$/, async function (petId) {
     this.response = await this.petApi.findPetById(petId);
 
     // Store the pet object for later use.
-    this.petData = this.response.data; 
-    console.log("this.petData GIVEN: " + JSON.stringify(this.petData, null, 2));
-    
+    this.petData = this.response.data;     
 });
   
 When(/^I update the pet (.+) and (.+)$/, async function (name, status) {
-
     // Update the stored pet object with the new name and status. 
     this.petData.name = name;
     this.petData.status = status;
@@ -74,7 +73,6 @@ When(/^I update the pet (.+) and (.+)$/, async function (name, status) {
     this.response = await this.petApi.updatePet(this.petData);
 });
 
-// GET - 
 Given(/^I want to find pets with the status (.+)$/, function (statuses) {
     this.petsStatuses = statuses;
 });

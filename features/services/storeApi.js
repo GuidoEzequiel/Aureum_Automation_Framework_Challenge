@@ -1,56 +1,45 @@
-const axios = require('axios');
 const FormData = require('form-data');
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
 const qs = require('qs');
-
-// Create the Axios instance only once
-let response;
-let petId;
+const ApiServices = require('./apiServices');
+const Environment = require('../environment/environment');
 
 class StoreApi {
+    
     constructor() {
-        this.baseURL = 'https://petstore.swagger.io/v2/store';
-
-        // Default client for JSON
-        this.jsonClient = axios.create({
-            baseURL: this.baseURL,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        // Separate client for form data
-        this.formClient = axios.create({
-            baseURL: this.baseURL,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        });
+        this.apiServices = new ApiServices();
+        this.storeUrl = Environment.storeUrl;
     }
 
-    // Pet endpoints.
+    async logs(){
+        console.log("Dentro del Log Method");
+    }
+    
     // Store endpoints.
-    async getInventory() {
+    async something() {
+        console.log("Llegó al getInve");
+
         try {
-            return await this.jsonClient.get(`${this.storeBasePath}/inventory`);
+            return await this.apiServices.get(`${this.storeUrl}/inventory`);
         } catch (error) {
-            console.error(error);
-            throw error;
+            console.error("Error getting inventory items:", error.message);
+            return { success: false, error: error.message };
         }
     }
 
     async placeOrder(orderData) {
         try {
-            return await this.jsonClient.post(`${this.storeBasePath}/order`, orderData);
+            return await this.apiServices.post(`${this.storeUrl}/order`, orderData);
         } catch (error) {
-            console.error(error);
-            throw error;
+            console.error("Error placing order:", error.message);
+            return { success: false, error: error.message };
         }
     }
 
     async getOrderById(orderId) {
         try {
-            return await this.jsonClient.get(`${this.storeBasePath}/order/${orderId}`);
+            return await this.apiServices.get(`${this.storeUrl}/order/${orderId}`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -59,7 +48,7 @@ class StoreApi {
 
     async deleteOrder(orderId) {
         try {
-            return await this.jsonClient.delete(`${this.storeBasePath}/order/${orderId}`);
+            return await this.apiServices.delete(`${this.storeUrl}/order/${orderId}`);
         } catch (error) {
             console.error(error);
             throw error;
