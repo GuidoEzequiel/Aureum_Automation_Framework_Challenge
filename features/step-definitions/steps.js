@@ -60,3 +60,7 @@ Then(/^I sort items by ([^"]*)$/, async (criteria) => {
 Then(/^I see sorted items by ([^"]*)$/, async (criteria) => {
     await InventoryPage.verifySortedItems(criteria);
 });
+
+When('I send a request to delete the pet', async function () {
+    this.response = await petStoreApi.deletePet(this.petId);
+});

@@ -1,6 +1,6 @@
-Feature: Petstore - Endpoint Tests
+Feature: Pet Services - Endpoint Tests
 
-  # Pet Endpoint Tests -
+
   Scenario Outline: POST - Upload an image for a pet
     Given I add a new pet with <petId>, <name>, and <status>
     When I upload an image for the pet with <petId>
@@ -32,7 +32,7 @@ Feature: Petstore - Endpoint Tests
       | 1002  | KitKat | pending | 200          |
 
 
-  Scenario Outline: Find pets by different statuses
+  Scenario Outline: GET - Find pets by different statuses
     Given I want to find pets with the status <statuses>
     When I search for pets by status
     Then I should receive a list of pets with the status <statuses>
@@ -47,7 +47,7 @@ Feature: Petstore - Endpoint Tests
       | available,sold    |
 
 
-  Scenario Outline: Find a pet using a specific ID
+  Scenario Outline: GET - Find a pet using a specific ID
     Given a pet with <petId>
     When I search for the pet ID
     Then I should receive the pet details
@@ -57,7 +57,8 @@ Feature: Petstore - Endpoint Tests
     | 1001    |
     | 10      |
 
-  Scenario Outline: Update a pet's name and status using its ID
+
+  Scenario Outline: POST - Update a pet's name and status using its ID
     Given a pet with <petId>
     And I have the new name <name> and status <status>
     When I update the pet using form data
@@ -68,17 +69,24 @@ Feature: Petstore - Endpoint Tests
     | 1001  | Reptar | available | 200          |
     | 1002  | Floki  | sold      | 200          |
 
+ Scenario Outline: DELETE - Delete a pet's entry using its ID
+   Given a pet with <petId>
+   When I send a request to remove the pet
+   Then the response code should be <responseCode>
 
-#  Scenario Outline: Attempt to find a pet using an invalid ID
-#    Given I have the pet ID <petId>
-#    When I search for the pet by ID
-#    Then I should receive an error message
+   Examples:
+     | petId | responseCode |
+     | 1001  | 200          |
 
-#  Examples:
-#    | petId      |
-#    | invalid    |
-#    | -1         |
-#    | 0          |
+
+#  Scenario Outline: DELETE - Delete a pet's entry using its ID
+#    Given a pet with <petId>
+#    When I send a request to remove the pet
+#    Then the response code should be <responseCode>
+#
+#    Examples:
+#      | petId | responseCode |
+#      | 1001  | 200          |
 
 
 # Store Endpoint Tests -

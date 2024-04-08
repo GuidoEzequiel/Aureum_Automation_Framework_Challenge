@@ -165,7 +165,7 @@ This project is designed to automate testing for the Pet Store API. The API allo
  - Use user data from a .json file instead of hardcoding it.
  - Encrypt credentials.
  - @tags for running different tests
-
+ - DEFENSIVE PROGRAMMING FOR APIS (Checkear antes de crear o borrar)
 
 ## Considerations:
  - Cucumber expressions don't seem to be working with webdriver.io so Regex was used for passing parameters from the feature files.
