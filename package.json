@@ -321,8 +321,12 @@
     "zip-stream": "^6.0.1"
   },
   "scripts": {
+    "wdio": "wdio run ./wdio.conf.js",
     "test": "wdio run ./wdio.conf.js",
-    "wdio": "wdio run ./wdio.conf.js"
+    "test:tag:UITests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@UITests'",
+    "test:tag:petServiceTests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@petServiceTests'",
+    "test:tag:storeServiceTests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@storeServiceTests'",
+    "test:tag:userServiceTests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@userServiceTests'"
   },
   "keywords": [],
   "author": "",

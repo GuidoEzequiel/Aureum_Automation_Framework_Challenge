@@ -1,7 +1,9 @@
 const environment = {
-    petApi: 'https://petstore.swagger.io/v2/pet',
-    storeApi: 'https://petstore.swagger.io/v2/store',
-    userApi: 'https://petstore.swagger.io/v2/user'
+    baseURL: 'https://petstore.swagger.io/v2',
+    
+    petUrl: 'https://petstore.swagger.io/v2/pet',
+    storeUrl: 'https://petstore.swagger.io/v2/store',
+    userUrl: 'https://petstore.swagger.io/v2/user'
 };
 
 module.exports = environment;

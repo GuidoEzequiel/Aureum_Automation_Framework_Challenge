@@ -1,3 +1,4 @@
+@userServiceTests
 Feature: Pet Services - Endpoint Tests
 
 

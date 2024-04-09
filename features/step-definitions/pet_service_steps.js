@@ -1,45 +1,17 @@
-const { setWorldConstructor, Given, When, Then } = require('@cucumber/cucumber');
+const { Given, When, Then } = require('@cucumber/cucumber');
 const assert = require('assert');
-const PetApi = require('../services/petApi');
 const path = require('path');
 
-class CustomWorld {
-    constructor() {
-        this.petApi = new PetApi();
-        this.response = null;
-        this.petData = {
-            id: 0,
-            category: {
-                id: 0,
-                name: "string"
-            },
-            name: "string",
-            photoUrls: [],
-            tags: [{
-                id: 0,
-                name: "string"
-            }],
-            status: "string"
-        };
-        this.petsStatuses = null;
-        this.formData = null;
-    }
-}
-
-setWorldConstructor(CustomWorld);
-
-// POST - 
 Given(/^I add a new pet with ([^"]*), ([^"]*), and ([^"]*)$/, async function (id, name, status) {
     this.response = await this.petApi.addPet(id, name, status);
 });
 
-Then(/^the response code should be ([^"]*)$/, function (responseCode) {
-    const expectedStatusCode = parseInt(responseCode);
-    console.log("expectedStatusCode: "+ expectedStatusCode);
-    console.log("this.response.status: "+ this.response.status);
+// STEP IS IMPLEMENTED IN 
+// Then(/^the response code should be ([^"]*)$/, function (responseCode) {
+//     const expectedStatusCode = parseInt(responseCode);
 
-    assert.strictEqual(this.response.status, expectedStatusCode, `Expected status code ${expectedStatusCode}, got ${this.response.status}`);
-});
+//     assert.strictEqual(this.response.status, expectedStatusCode, `Expected status code ${expectedStatusCode}, got ${this.response.status}`);
+// });
 
 When(/^I upload an image for the pet with ([^"]*)$/, async function (id) {
     const imagePath = path.join(__dirname, '..', 'images', 'petsImage.jpg');
@@ -50,22 +22,23 @@ Then('the response message should confirm the image upload', function () {
     assert.ok(this.response.statusText.includes('OK'), 'Image upload confirmation text not found in the response message');
 });
 
-// PUT - 
 Given(/^a pet with (\d+)$/, async function (petId) {
+
     // Convert petId from string to integer.
-    this.petData.id = petId = parseInt(petId);
+    this.petData.id = parseInt(petId);
 
     // Assuming there is a method to retrieve a pet by ID to check if it exists.
     this.response = await this.petApi.findPetById(petId);
 
     // Store the pet object for later use.
-    this.petData = this.response.data; 
-    console.log("this.petData GIVEN: " + JSON.stringify(this.petData, null, 2));
-    
+    this.petData = this.response.data;
+});
+ 
+Given(/^I ensure a pet with (\d+) exists$/, async function (petId) {
+    this.response = await this.petApi.ensurePetExists(petId, this.petData);
 });
   
 When(/^I update the pet (.+) and (.+)$/, async function (name, status) {
-
     // Update the stored pet object with the new name and status. 
     this.petData.name = name;
     this.petData.status = status;
@@ -74,7 +47,6 @@ When(/^I update the pet (.+) and (.+)$/, async function (name, status) {
     this.response = await this.petApi.updatePet(this.petData);
 });
 
-// GET - 
 Given(/^I want to find pets with the status (.+)$/, function (statuses) {
     this.petsStatuses = statuses;
 });

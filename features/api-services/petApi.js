@@ -1,6 +1,6 @@
 const FormData = require('form-data');
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
 const qs = require('qs');
 const ApiServices = require('./apiServices');
 const Environment = require('../environment/environment');
@@ -8,7 +8,7 @@ const Environment = require('../environment/environment');
 class PetApi{
     constructor() {
         this.apiServices = new ApiServices();
-        this.petURL = Environment.petApi;
+        this.petURL = Environment.petUrl;
     }
 
     // Pet endpoints.
@@ -52,10 +52,10 @@ class PetApi{
                 name: name,
                 status: status
             };
-            console.log("petData: " + petData);
+            console.log("petData: ", petData);
             return await this.apiServices.post(this.petURL, petData);
         } catch (error) {
-            console.error("Error adding new pet:", error);
+            console.error("Error adding new pet: ", error);
             return { success: false, error: error.message };
         }
      }
@@ -117,6 +117,35 @@ class PetApi{
             throw error;
         }
     }
+
+    async ensurePetExists(petId, petData) {
+        try {
+            petData.id = parseInt(petId);
+            // Attempt to find the pet by ID
+            const findResponse = await this.findPetById(petId);
+            
+            // If the pet is found or successfully retrieved, return the response
+            if (findResponse.success && findResponse.data) {
+                return findResponse;
+            }
+
+            // If the pet is not found, create it using the provided template
+            const createResponse = await this.addPet(petData.id, petData.name, petData.status);
+            if (createResponse.success && createResponse.data) {
+                return createResponse;
+            } else {
+                // Handle failure to create a new pet
+                const errorMessage = createResponse.error || 'Unknown error occurred while creating pet';
+                throw new Error(errorMessage);
+            }
+        } catch (error) {
+            // Log the error and return a failed response
+            console.error(`Error in ensurePetExists: ${error.message}`, error);
+            return { success: false, error: error.message };
+        }
+    }
+
+
 }
 
 module.exports = PetApi;

@@ -36,8 +36,6 @@ class ApiServices {
 
     async post(path, data) {
         try {
-            console.log("path: " + path);
-            console.log("data: " + data);
             return await this.jsonClient.post(path, data);
         } catch (error) {
             console.error("Error:", error);
