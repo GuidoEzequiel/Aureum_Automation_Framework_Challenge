@@ -12,13 +12,9 @@ class StoreApi {
         this.storeUrl = Environment.storeUrl;
     }
 
-    async logs(){
-        console.log("Dentro del Log Method");
-    }
-    
     // Store endpoints.
-    async something() {
-        console.log("Llegó al getInve");
+    async getInventory() {
+        console.log("Llegó al getInventory");
 
         try {
             return await this.apiServices.get(`${this.storeUrl}/inventory`);

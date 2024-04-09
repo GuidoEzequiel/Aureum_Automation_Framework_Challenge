@@ -10,7 +10,6 @@ Feature: Store Services - Endpoint Tests
       | responseCode |
       | 200          |
 
-
   # Scenario Outline: POST -  Place an order for a pet
   #   Given the order details for a pet
   #   When I place an order for the pet

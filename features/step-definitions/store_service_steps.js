@@ -1,37 +1,8 @@
-const { setWorldConstructor, Given, When, Then } = require('@cucumber/cucumber');
+const { Given, When, Then } = require('@cucumber/cucumber');
 const assert = require('assert');
-const StoreApi = require('../services/storeApi');
-
-class StoreWorld {
-    constructor() {
-        this.storeApi = new StoreApi();
-        this.response = null;
-        this.storeData = {
-            id: 0,
-            petId: 0,
-            quantity: 0,
-            shipDate: "2024-04-08T14:00:48.632Z",
-            status: "placed",
-            complete: true
-        };
-    }
-}
-
-storeWorld = new StoreWorld();
-
-setWorldConstructor(storeWorld);
 
 Given('I request the inventory status counts', async function () {
-    console.log("Llegó al Primer Given");
-    console.log(this.storeApi);
-
-    console.log("World: ");
-    console.log(storeWorld);
-    console.log(setWorldConstructor(storeWorld));
-
-    this.response = await this.storeApi.logs();
- 
-    //this.response = await this.storeApi.something();
+    this.response = await this.storeApi.getInventory();
 });
 
 Then('the response body should be a map of status counts', async function () {
