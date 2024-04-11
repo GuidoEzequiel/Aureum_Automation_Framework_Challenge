@@ -27,7 +27,7 @@ Given(/^a pet with (\d+)$/, async function (petId) {
     this.petData = this.response.data;
 });
  
-Given(/^I ensure the pet with (\d+) exists$/, async function (petId) {
+Given(/^I ensure a pet with (\d+) exists$/, async function (petId) {
     this.response = await this.petApi.ensurePetExists(petId, this.petData);
 });
   

@@ -41,16 +41,16 @@ class CustomWorld {
 
         this.userData = {
             id: 0,
-            username: "string",
-            firstName: "string",
-            lastName: "string",
-            email: "string",
-            password: "string",
-            phone: "string",
+            username: "world username",
+            firstName: "world firstname",
+            lastName: "world lastname",
+            email: "world@example.com",
+            password: "world password",
+            phone: "world phone",
             userStatus: 0
           };
+          this.usersCollection = null;
     }
-
 }
 
 setWorldConstructor(CustomWorld);

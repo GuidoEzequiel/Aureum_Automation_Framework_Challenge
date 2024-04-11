@@ -35,6 +35,11 @@ class StoreApi extends BaseApi{
         try {
             return await this.get(`${this.serviceUrl}/order/${orderId}`);
         } catch (error) {
+            if (error.response && error.response.status === 404) {
+                // Order not found, not an error in this workflow.
+                return { success: false, data: null, error: 'Order Id not found' };
+            }
+            // Log other errors and return a failure response
             console.error("Error getting order by Id:", error.message);
             return { success: false, error: error.message };
         }

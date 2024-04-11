@@ -2,7 +2,6 @@ const { browser } = require('@wdio/globals')
 
 // Base page object containing  methods, selectors and functionality that is shared across all page objects
 module.exports = class BasePage {
-    // Opens a sub page of the page
     // Opens the Login page.
     open () {
         return browser.url(`https://www.saucedemo.com/`)
