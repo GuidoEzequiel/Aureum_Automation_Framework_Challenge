@@ -23,7 +23,7 @@ Feature: Pet Services - Endpoint Tests
 
 
   Scenario Outline: PUT - Update already existing pet
-    Given a pet with <petId>
+    Given I ensure the pet with <petId> exists
     When I update the pet <name> and <status>
     Then the response code should be <responseCode>
 
@@ -59,8 +59,8 @@ Feature: Pet Services - Endpoint Tests
 
 
   Scenario Outline: POST - Update a pet's name and status using its ID
-    Given I ensure a pet with <petId> exists
-    And I have the new name <name> and status <status>
+    Given I ensure the pet with <petId> exists
+    And I have the new pet name <name> and status <status>
     When I update the pet using form data
     Then the response code should be <responseCode>
 
@@ -70,18 +70,13 @@ Feature: Pet Services - Endpoint Tests
       | 1002  | Floki  | sold      | 200          |
 
  Scenario Outline: DELETE - Delete a pet's entry using its ID
-    Given a pet with <petId>
+    Given I ensure the pet with <petId> exists
     When I send a request to remove the pet
     Then the response code should be <responseCode>
 
     Examples:
       | petId | responseCode |
       | 1001  | 200          |
-
-# Store Endpoint Tests -
-
-
-# User Endpoint Tests -
 
 
 #  # Negative Cases -

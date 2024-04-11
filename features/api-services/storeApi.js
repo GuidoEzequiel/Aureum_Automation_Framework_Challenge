@@ -2,22 +2,20 @@ const FormData = require('form-data');
 const path = require('path');
 const fs = require('fs');
 const qs = require('qs');
-const ApiServices = require('./apiServices');
-const Environment = require('../environment/environment');
+const axios = require('axios');
+const BaseApi = require('./baseApi');
+const assert = require('assert');
 
-class StoreApi {
-    
+class StoreApi extends BaseApi{
     constructor() {
-        this.apiServices = new ApiServices();
-        this.storeUrl = Environment.storeUrl;
+        super("/store");
+        this.serviceUrl = this.url;
     }
 
     // Store endpoints.
     async getInventory() {
-        console.log("Llegó al getInventory");
-
         try {
-            return await this.apiServices.get(`${this.storeUrl}/inventory`);
+            return await this.get(`${this.serviceUrl}/inventory`);
         } catch (error) {
             console.error("Error getting inventory items:", error.message);
             return { success: false, error: error.message };
@@ -26,7 +24,7 @@ class StoreApi {
 
     async placeOrder(orderData) {
         try {
-            return await this.apiServices.post(`${this.storeUrl}/order`, orderData);
+            return await this.post(`${this.serviceUrl}/order`, orderData);
         } catch (error) {
             console.error("Error placing order:", error.message);
             return { success: false, error: error.message };
@@ -35,19 +33,50 @@ class StoreApi {
 
     async getOrderById(orderId) {
         try {
-            return await this.apiServices.get(`${this.storeUrl}/order/${orderId}`);
+            return await this.get(`${this.serviceUrl}/order/${orderId}`);
         } catch (error) {
-            console.error(error);
-            throw error;
+            console.error("Error getting order by Id:", error.message);
+            return { success: false, error: error.message };
         }
     }
 
     async deleteOrder(orderId) {
         try {
-            return await this.apiServices.delete(`${this.storeUrl}/order/${orderId}`);
+            return await this.delete(`${this.serviceUrl}/order/${orderId}`);
         } catch (error) {
-            console.error(error);
-            throw error;
+            console.error("Error deleting order by Id:", error.message);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async compareOrderResponseWithOrderData(orderResponse, orderDetails){
+        assert.deepStrictEqual(orderResponse, orderDetails);
+    }
+
+    async ensureOrderIdExists(orderId, orderData) {
+        try {
+            orderData.id = orderId;
+            // Attempt to get order by ID
+            const orderIdResponse = await this.getOrderById(orderId);
+
+            // If the order id is found or successfully retrieved, return the response
+            if (orderIdResponse.success && orderIdResponse.data) {
+                return orderIdResponse;
+            }
+
+            // If the order id is not found, create it using the provided template
+            const createResponse = await this.placeOrder(orderData);
+            if (createResponse.success && createResponse.data) {
+                return createResponse;
+            } else {
+                // Handle failure to get order id.
+                const errorMessage = createResponse.error || 'Unknown error occurred while getting order data';
+                throw new Error(errorMessage);
+            }
+        } catch (error) {
+            // Log the error and return a failed response
+            console.error(`Error in ensureOrderIdExists: ${error.message}`, error);
+            return { success: false, error: error.message };
         }
     }
 }

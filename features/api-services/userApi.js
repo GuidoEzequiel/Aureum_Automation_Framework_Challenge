@@ -3,19 +3,20 @@ const FormData = require('form-data');
 const fs = require('fs');
 const path = require('path');
 const qs = require('qs');
-const ApiServices = require('./apiServices');
-const Environment = require('../environment/environment');
+const BaseApi = require('./baseApi');
+const assert = require('assert');
 
-class UserApi {
+
+class UserApi extends BaseApi{
     constructor() {
-        this.apiServices = new ApiServices();
-        this.storeUrl = Environment.userUrl;
+        super("/user");
+        this.serviceUrl = this.url;
     }
 
     // User endpoints
     async createUserWithList(userList) {
         try {
-            return await this.jsonClient.post(`${this.userBasePath}/createWithList`, userList);
+            return await this.jsonClient.post(`${this.serviceUrl}/createWithList`, userList);
         } catch (error) {
             console.error(error);
             throw error;
@@ -24,7 +25,7 @@ class UserApi {
 
     async getUserByUsername(username) {
         try {
-            return await this.jsonClient.get(`${this.userBasePath}/${username}`);
+            return await this.jsonClient.get(`${this.serviceUrl}/${username}`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -33,7 +34,7 @@ class UserApi {
 
     async updateUser(username, userData) {
         try {
-            return await this.jsonClient.put(`${this.userBasePath}/${username}`, userData);
+            return await this.jsonClient.put(`${this.serviceUrl}/${username}`, userData);
         } catch (error) {
             console.error(error);
             throw error;
@@ -42,7 +43,7 @@ class UserApi {
 
     async deleteUser(username) {
         try {
-            return await this.jsonClient.delete(`${this.userBasePath}/${username}`);
+            return await this.jsonClient.delete(`${this.serviceUrl}/${username}`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -51,7 +52,7 @@ class UserApi {
 
     async loginUser(username, password) {
         try {
-            return await this.jsonClient.get(`${this.userBasePath}/login?username=${username}&password=${password}`);
+            return await this.jsonClient.get(`${this.serviceUrl}/login?username=${username}&password=${password}`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -60,7 +61,7 @@ class UserApi {
 
     async logoutUser() {
         try {
-            return await this.jsonClient.get(`${this.userBasePath}/logout`);
+            return await this.jsonClient.get(`${this.serviceUrl}/logout`);
         } catch (error) {
             console.error(error);
             throw error;
@@ -69,7 +70,7 @@ class UserApi {
 
     async createUserWithArray(userArray) {
         try {
-            return await this.jsonClient.post(`${this.userBasePath}/createWithArray`, userArray);
+            return await this.jsonClient.post(`${this.serviceUrl}/createWithArray`, userArray);
         } catch (error) {
             console.error(error);
             throw error;
@@ -78,7 +79,7 @@ class UserApi {
 
     async createUser(userData) {
         try {
-            return await this.jsonClient.post(this.userBasePath, userData);
+            return await this.jsonClient.post(this.serviceUrl, userData);
         } catch (error) {
             console.error(error);
             throw error;

@@ -2,19 +2,17 @@ const FormData = require('form-data');
 const path = require('path');
 const fs = require('fs');
 const qs = require('qs');
-const ApiServices = require('./apiServices');
-const Environment = require('../environment/environment');
+const BaseApi = require('./baseApi');
 
-class PetApi{
+class PetApi extends BaseApi{
     constructor() {
-        this.apiServices = new ApiServices();
-        this.petURL = Environment.petUrl;
+        super("/pet");
+        this.serviceUrl = this.url;
     }
 
     // Pet endpoints.
     async uploadImage(petId, imagePath) {
         try {
-            
             // Create a new FormData instance to hold the file data for upload.
             const form = new FormData();
 
@@ -33,7 +31,7 @@ class PetApi{
             
             // Make an HTTP POST request to the pet's uploadImage endpoint with the form data.
             // Spread the form headers into the headers object of the request.
-            const response = await this.apiServices.postForm(`${this.petURL}/${petId}/uploadImage`, form, {
+            const response = await this.postForm(`${this.serviceUrl}/${petId}/uploadImage`, form, {
                 headers: { ...formHeaders },
             });
             
@@ -48,12 +46,11 @@ class PetApi{
     async addPet(id, name, status) {
         try {
             const petData = {
-                id: parseInt(id),
+                id: id,
                 name: name,
                 status: status
             };
-            console.log("petData: ", petData);
-            return await this.apiServices.post(this.petURL, petData);
+            return await this.post(this.serviceUrl, petData);
         } catch (error) {
             console.error("Error adding new pet: ", error);
             return { success: false, error: error.message };
@@ -63,7 +60,7 @@ class PetApi{
     // Method to update an existing pet.
     async updatePet(petData) {
         try {
-            return await this.apiServices.put(this.petURL, petData);
+            return await this.put(this.serviceUrl, petData);
         } catch (error) {
             console.error("Error updating pet:", error.message);
             return { success: false, error: error.message };
@@ -74,7 +71,7 @@ class PetApi{
         try {
             // Enconding to avoid URL query issues.
             const encodedStatuses = statuses.split(',').map(s => encodeURIComponent(s)).join(',');
-            const response = await this.apiServices.get(`${this.petURL}/findByStatus`, {
+            const response = await this.get(`${this.serviceUrl}/findByStatus`, {
                 params: { status: encodedStatuses }
             });
             return response;
@@ -86,7 +83,7 @@ class PetApi{
 
     async findPetById(petId) {
         try {
-            return await this.apiServices.get(`${this.petURL}/${petId}`);
+            return await this.get(`${this.serviceUrl}/${petId}`);
         } catch (error) {
             console.error(`Error finding pet by ID ${petId}:`, error);
             return { success: false, error: error.message };
@@ -98,7 +95,7 @@ class PetApi{
             // Convert the formData object to URL-encoded string
             const formBody = qs.stringify(formData);
 
-            return await this.apiServices.postForm(`${this.petURL}/${petId}`, formBody);
+            return await this.postForm(`${this.serviceUrl}/${petId}`, formBody);
         } catch (error) {
             console.error("Error updating pet with form data:", error);
             return { success: false, error: error.message };
@@ -107,8 +104,7 @@ class PetApi{
 
     async deletePet(petId) {
         try {
-            console.log(`this.baseURL + this.petBasePath: ${this.petURL}/${petId}`);
-            return await this.apiServices.delete(`${this.petURL}/${petId}`);
+            return await this.delete(`${this.serviceUrl}/${petId}`);
         } catch (error) {
             console.error('Error:', error.message);
             if (error.response) {
@@ -123,7 +119,7 @@ class PetApi{
             petData.id = parseInt(petId);
             // Attempt to find the pet by ID
             const findResponse = await this.findPetById(petId);
-            
+
             // If the pet is found or successfully retrieved, return the response
             if (findResponse.success && findResponse.data) {
                 return findResponse;
@@ -144,8 +140,6 @@ class PetApi{
             return { success: false, error: error.message };
         }
     }
-
-
 }
 
 module.exports = PetApi;

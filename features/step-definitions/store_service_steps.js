@@ -12,6 +12,40 @@ Then('the response body should be a map of status counts', async function () {
     });
 });
 
+Given('the order details for a pet with {int} and {int}', function (petId, quantity) {
+    this.orderDetails.petId = petId;
+    this.orderDetails.quantity = quantity;
+});
+
+When('I place an order for the pet', async function () {
+    this.response = await this.storeApi.placeOrder(this.orderDetails);
+});
+
 Then('the response body should reflect the placed order', function () {
-    assert.deepStrictEqual(this.response.data, this.orderDetails);
+    this.storeApi.compareOrderResponseWithOrderData();
+});
+
+//---
+// Assuming you have a CustomWorld that includes an instance of StoreApi
+Given('I ensure an order with {int} exists', async function(orderId) {
+    this.response = await this.storeApi.ensureOrderIdExists(orderId, this.orderDetails);
+});
+
+When('I retrieve the order by ID', async function() {
+    this.response = await this.storeApi.getOrderById(this.orderDetails.id);
+});
+
+When('I delete the order by ID', async function() {
+    this.response = await this.storeApi.deleteOrder(this.orderDetails.id);
+});
+
+Then('the response body should reflect the retrieved order', function() {
+    const responseBody = this.response.data;
+
+    // Add additional assertions for the rest of the expected fields
+    assert.strictEqual(responseBody.id, this.orderDetails.id);
+    assert.strictEqual(responseBody.petId, this.orderDetails.petId);
+    assert.strictEqual(responseBody.quantity, this.orderDetails.quantity);
+    assert.strictEqual(responseBody.status, this.orderDetails.status);
+    assert.strictEqual(responseBody.complete, this.orderDetails.complete);
 });

@@ -2,16 +2,9 @@ const { Given, When, Then } = require('@cucumber/cucumber');
 const assert = require('assert');
 const path = require('path');
 
-Given(/^I add a new pet with ([^"]*), ([^"]*), and ([^"]*)$/, async function (id, name, status) {
+Given(/^I add a new pet with (\d+), (.+), and (.+)$/, async function (id, name, status) {
     this.response = await this.petApi.addPet(id, name, status);
 });
-
-// STEP IS IMPLEMENTED IN 
-// Then(/^the response code should be ([^"]*)$/, function (responseCode) {
-//     const expectedStatusCode = parseInt(responseCode);
-
-//     assert.strictEqual(this.response.status, expectedStatusCode, `Expected status code ${expectedStatusCode}, got ${this.response.status}`);
-// });
 
 When(/^I upload an image for the pet with ([^"]*)$/, async function (id) {
     const imagePath = path.join(__dirname, '..', 'images', 'petsImage.jpg');
@@ -34,7 +27,7 @@ Given(/^a pet with (\d+)$/, async function (petId) {
     this.petData = this.response.data;
 });
  
-Given(/^I ensure a pet with (\d+) exists$/, async function (petId) {
+Given(/^I ensure the pet with (\d+) exists$/, async function (petId) {
     this.response = await this.petApi.ensurePetExists(petId, this.petData);
 });
   
@@ -83,7 +76,7 @@ Then('I should receive the pet details', function () {
     assert.equal(this.response.data.id, this.petData.id, `Expected pet ID to be ${this.petData.id} but received ${this.response.data.id}`);
 });
 
-Given(/^I have the new name (.+) and status (.+)$/, function (name, status) {
+Given(/^I have the new pet name (.+) and status (.+)$/, function (name, status) {
     this.formData = { name, status };
 });
 

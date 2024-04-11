@@ -2,12 +2,14 @@ const { setWorldConstructor } = require('@cucumber/cucumber');
 const PetApi = require('../api-services/petApi');
 const StoreApi = require('../api-services/storeApi');
 const UserApi = require('../api-services/userApi');
+const BaseApi = require('../api-services/baseApi');
 
 class CustomWorld {
     constructor() {
         this.petApi = new PetApi();
         this.storeApi = new StoreApi();
         this.userApi = new UserApi();
+        this.baseApi = new BaseApi();
 
         this.response = null;
     
@@ -28,7 +30,7 @@ class CustomWorld {
         this.petsStatuses = null;
         this.formData = null;
 
-        this.storeData = {
+        this.orderDetails = {
             id: 0,
             petId: 0,
             quantity: 0,

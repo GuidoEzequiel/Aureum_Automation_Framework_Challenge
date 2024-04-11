@@ -1,21 +1,82 @@
-const FormData = require('form-data');
-const path = require('path');
-const fs = require('fs');
-const qs = require('qs');
-const ApiServices = require('./apiServices');
+const axios = require('axios');
 const Environment = require('../environment/environment');
+const assert = require('assert');
 
-class BaseApi{
-    constructor() {
-        this.apiServices = new ApiServices();
-        this.url = Environment.baseURL;
+// Base Api object containing  methods, selectors and functionality that is shared across all Api objects
+class BaseApi {
+    constructor(serviceFirm){
+        this.url = Environment.baseURL + serviceFirm;
+        this.createJsonHeader();
+        this.createFormHeader();
     }
 
-    // Base Methods.
-    async checkStatusCode(id, name, status) {
-        const expectedStatusCode = parseInt(responseCode);
-        assert.strictEqual(this.response.status, expectedStatusCode, `Expected status code ${expectedStatusCode}, got ${this.response.status}`);
-     }
+    createJsonHeader() {
+        this.jsonClient = axios.create({
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+
+    createFormHeader() {
+        // Separate client for form data
+        this.formClient = axios.create({
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+    }
+
+    async get(path) {
+        try {
+            return await this.jsonClient.get(path);
+        } catch (error) {
+            console.error("Error:", error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async post(path, data) {
+        try {
+            return await this.jsonClient.post(path, data);
+        } catch (error) {
+            console.error("Error:", error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async postForm(path, data) {
+        try {
+            return await this.formClient.post(path, data);
+        } catch (error) {
+            console.error("Error:", error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async put(path, data) {
+        try {
+            return await this.jsonClient.post(path, data);
+        } catch (error) {
+            console.error("Error:", error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async delete(path, data) {
+        try {
+            return await this.jsonClient.delete(path, data);
+        } catch (error) {
+            console.error("Error:", error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async checkStatusCode(expectedCode, response) {
+        const expectedStatusCode = parseInt(expectedCode);
+
+        assert.strictEqual(response.status, expectedStatusCode, `Expected status code ${expectedStatusCode}, got ${response.status}`);
+    }
 }
 
 module.exports = BaseApi;
