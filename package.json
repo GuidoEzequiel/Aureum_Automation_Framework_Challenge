@@ -322,11 +322,12 @@
   },
   "scripts": {
     "wdio": "wdio run ./wdio.conf.js",
-    "test": "wdio run ./wdio.conf.js",
-    "test:tag:UITests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@UITests'",
-    "test:tag:petServiceTests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@petServiceTests'",
-    "test:tag:storeServiceTests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@storeServiceTests'",
-    "test:tag:userServiceTests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@userServiceTests'"
+    "tests": "wdio run ./wdio.conf.js",
+    "tag:uiTests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@uiTests'",
+    "tag:petServiceTests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@petServiceTests'",
+    "tag:storeServiceTests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@storeServiceTests'",
+    "tag:userServiceTests": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@userServiceTests'",
+    "tag:bonusTest": "wdio run ./wdio.conf.js -- --cucumberOpts.tagExpression='@bonusTest' --verbose"
   },
   "keywords": [],
   "author": "",

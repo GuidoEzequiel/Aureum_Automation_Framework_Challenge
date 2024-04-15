@@ -16,12 +16,12 @@ Ensure you have Node.js installed on your system. You can download and install i
 
 Clone the repository to your local machine using the following command:
 
-```console
+```bash
 git clone https://github.com/GuidoEzequiel/Aureum_Automation_Framework_Challenge.git
 ```
 
 ### 3. Navigate to the Project Directory
-```console
+```bash
 cd <project-directory>
 ```
 
@@ -29,7 +29,7 @@ cd <project-directory>
 
 Use npm (Node Package Manager) to install the required dependencies:
 
-```console
+```bash
 npm install
 ```
 
@@ -38,19 +38,16 @@ This command will install all the necessary packages specified in the `package.j
 
 ## Running Tests:
 
-To run all current tests, execute the following command:
+### To run all current tests, execute the following command:
 
-```console
+```bash
 npm run test
-
-npx wdio run ./wdio.conf.js
 ```
 
-### Executing Reports:
+### To run UI tests use:
 
-This command will take previously generated test results and provide a report with that data.
-```console
-npx allure serve allure-results
+```bash
+npm run tests
 ```
 
 ## Troubleshooting
@@ -59,7 +56,7 @@ If you encounter issues running the tests after pulling changes or setting up th
 
 To update dependencies, run the following command:
 
-```console
+```bash
 npm update
 ```
 
@@ -95,10 +92,9 @@ Once the extension is installed, it will use the following settings specified in
 ```
 
 ## PENDING TO IMPLEMENT:
- - Use user data from a .json file instead of hardcoding it.
  - Encrypt credentials.
  - @tags Added - Configs for tags needed.
- - DEFENSIVE PROGRAMMING FOR APIS.
+ - Defensive programming for APIs.
 
 
 # Test Strategy Document
