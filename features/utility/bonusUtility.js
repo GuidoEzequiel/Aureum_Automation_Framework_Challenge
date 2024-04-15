@@ -6,9 +6,9 @@ async function visitDirectChildren(element, callback) {
   // Get only children of the current element.
   const children = await element.$$(':scope > *');
 
-  // Loop through each child and apply the callback.
+  // Loop through each child and recursively call visitDirectChildren with both child and callback.
   for (const child of children) {
-    await callback(child);
+      await callback(child); // Include the callback here
   }
 }
 
