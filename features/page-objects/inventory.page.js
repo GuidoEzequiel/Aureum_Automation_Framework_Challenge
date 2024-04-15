@@ -3,8 +3,6 @@ const { $ } = require('@wdio/globals');
 
 class InventoryPage extends BasePage {
 
-    // Inventory Page Locators.
-    
     // Map between item names and button locators.
     buttonSelectors = {
         backpack: '#add-to-cart-sauce-labs-backpack',
@@ -15,7 +13,6 @@ class InventoryPage extends BasePage {
         redTShirt: '#add-to-cart-test.allthethings()-t-shirt-(red)',
     };
     
-    // Web items common locators.
     get shoppingCartContainer () {
         return $('#shopping_cart_container');
     }
@@ -32,8 +29,6 @@ class InventoryPage extends BasePage {
         return $$('div[class="inventory_item_price"]');
     }
 
-    // Inventory Page Methods.
-
     // Adds items to Cart based on item names passed on Feature file.
     async addItemsToCart(itemsList) {
         const items = super.splitPassedItems(itemsList);
@@ -47,15 +42,14 @@ class InventoryPage extends BasePage {
         }
     }
     
-    // Clicks on the shopping cart.
     async proceedToCart () {
         await this.shoppingCartContainer.click();
     }
 
     //Sorts Items based on criteria passed on Feature file.
     async sortItemsBy (criteria) {
-        // Sorts items based on passed criteria.
         let visibleText;
+
         switch (criteria) {
             case 'Price':
                 visibleText = 'Price (high to low)';
@@ -69,7 +63,7 @@ class InventoryPage extends BasePage {
         await this.productSortContainer.selectByVisibleText(visibleText);
     }
 
-    //Helper method to get 
+    //Helper method to get
     async fetchItemDetails() {
         // Get all the item names.
         const itemNamesList = await this.itemNamesList;

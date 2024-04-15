@@ -3,7 +3,6 @@ const { $ } = require('@wdio/globals');
 
 class CheckoutStepOnePage extends BasePage {
 
-    // Checkout Step One Page Locators.
     get firstNameInput () {
         return $('#first-name');
     }
@@ -20,7 +19,6 @@ class CheckoutStepOnePage extends BasePage {
         return $('#continue');
     }
 
-    // Checkout Step One Page Methods.
     async fillUserInformation () {
         await this.firstNameInput.setValue("FirstName");
         await this.lastNameInput.setValue("LastName");

@@ -16,12 +16,12 @@ Ensure you have Node.js installed on your system. You can download and install i
 
 Clone the repository to your local machine using the following command:
 
-```console
+```bash
 git clone https://github.com/GuidoEzequiel/Aureum_Automation_Framework_Challenge.git
 ```
 
 ### 3. Navigate to the Project Directory
-```console
+```bash
 cd <project-directory>
 ```
 
@@ -29,7 +29,7 @@ cd <project-directory>
 
 Use npm (Node Package Manager) to install the required dependencies:
 
-```console
+```bash
 npm install
 ```
 
@@ -38,17 +38,16 @@ This command will install all the necessary packages specified in the `package.j
 
 ## Running Tests:
 
-To run all current tests, execute the following command:
+### To run all current tests, execute the following command:
 
-```console
+```bash
 npm run test
 ```
 
-### Executing Reports:
+### To run UI tests use:
 
-This command will take previously generated test results and provide a report with that data.
-```console
-npx allure serve allure-results
+```bash
+npm run tests
 ```
 
 ## Troubleshooting
@@ -57,7 +56,7 @@ If you encounter issues running the tests after pulling changes or setting up th
 
 To update dependencies, run the following command:
 
-```console
+```bash
 npm update
 ```
 
@@ -92,41 +91,33 @@ Once the extension is installed, it will use the following settings specified in
 }
 ```
 
-## Current Implementations
-
-This automation framework covers a variety of UI and API tests to validate the functionality of the application. Below are the tests currently implemented.
-
-### UI Tests:
-
-- **Add to Cart**:
-  - Verify that an item can be added to the cart and is visible on the cart page.
-
-- **Checkout Process**:
-  - Ensure the user can complete the purchase/checkout process.
-
-- **Sort by Price**:
-  - Verify that inventory items can be sorted by price, high-to-low, and the sorting is correct.
-
-- **Sort by Name**:
-  - Ensure that inventory can be sorted by name, Z-to-A, and the sorting is correct.
-
-### API Tests:
-
-- **API Call Testing**:
-  - Create tests for API calls (POST, GET, PUT, DELETE), setting headers, body, and making proper assertions. For examples of API Testing, refer to the Swagger documentation available at: [Swagger Petstore](https://petstore.swagger.io/)
-
-### Bonus Task:
-
-- **DOM Traversal Function**:
-  - Implement a function in your automation framework that, given a DOM Element on the page, will visit the element itself and all of its descendants.
-  - For each element, the function will pass that element to a provided callback function.
-  - The arguments to the function are a DOM element and a callback function (that takes a DOM element as its argument).
-
 ## PENDING TO IMPLEMENT:
- - Remove console.logs
- - Review and add Comments.
- - Use user data from a .json file instead of hardcoding it.
  - Encrypt credentials.
+ - @tags Added - Configs for tags needed.
+ - Defensive programming for APIs.
+
+
+# Test Strategy Document
+
+For a detailed overview of the testing approach, please check [Test Strategy Document](https://docs.google.com/document/d/1rBFE_hORTAgUARbvsjwHAXEWhhasDg7LBk3rQm9Ywt4/edit?usp=sharing).
+The document is also uploaded here in this repo as:
+
+```console
+Test Strategy Document.pdf
+```
+
+
+## General Considerations:
+ - Cucumber expressions don't seem to be working with webdriver.io so Regex was used for passing parameters from the feature files.
+ - 'And' cucumber notation does not work natively with webdriver.io in the step definitions.
+ 
+ ## API Considerations
+
+- I took the deliberate decision to include scenarios with explicit HTTP method details to test negative cases since the audience for this has technical knowledge evaluating API testing proficiency.
+- This way looks more clear and directly shows how the API handles incorrect or unexpected usage.
+- In scenarios involving non-technical people I would rather take the approach to keep this logic into the steps/api methods themselves. And use a less technical languaje to communicate it's actions in business terms.
+- I used cucumber because already dealt with front end ....
+
 
 ## Contact
 

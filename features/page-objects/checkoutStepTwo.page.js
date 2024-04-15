@@ -3,14 +3,11 @@ const itemSelectors = require('../utility/itemSelectors');
 const { $ } = require('@wdio/globals');
 const { expect: expectWDIO } = require('@wdio/globals');
 
-//sub page containing specific selectors and methods for a specific page
 class CheckoutStepTwoPage extends BasePage {
 
-    // Checkout Step Two Page Locators.
     get finishCheckout () {
         return $('#finish');
     }
-    // Checkout Step Two Page Methods.
 
     // Verifies items have been added correctly before chekout is finished.
     async verifyCheckoutItems(itemsList) {
@@ -24,7 +21,7 @@ class CheckoutStepTwoPage extends BasePage {
         }
     }
 
-    // Proceeds on to finish checkout process.
+    // Finishes checkout process.
     async finishCheckoutProcess() {
         await this.finishCheckout.click();
     }

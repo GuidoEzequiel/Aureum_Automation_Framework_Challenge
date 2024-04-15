@@ -1,4 +1,5 @@
-Feature: Add to Cart
+@uiTests
+Feature: UI validations
 
   Scenario Outline: As a user, I can verify an item can be added to the cart and is visible on the cart page.
 
