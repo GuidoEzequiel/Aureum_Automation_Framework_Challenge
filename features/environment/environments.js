@@ -3,7 +3,7 @@ const environments = {
 
     sauceDemo: 'https://www.saucedemo.com/',
 
-    bonusUrl: 'https://the-internet.herokuapp.com/',
+    bonusURL: 'https://the-internet.herokuapp.com/',
 };
 
 module.exports = environments;
