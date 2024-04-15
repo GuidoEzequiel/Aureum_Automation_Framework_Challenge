@@ -38,13 +38,7 @@ This command will install all the necessary packages specified in the `package.j
 
 ## Running Tests:
 
-### To run all current tests, execute the following command:
-
-```bash
-npm run test
-```
-
-### To run UI tests use:
+### To run current tests, execute the following command:
 
 ```bash
 npm run tests
