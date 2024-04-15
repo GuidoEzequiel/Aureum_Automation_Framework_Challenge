@@ -1,4 +1,4 @@
-// Define common selector between pages.
+// Common selectors between pages.
 const itemSelectors = {
     backpack: '#item_4_title_link',
     bikeLight: '#item_0_title_link',

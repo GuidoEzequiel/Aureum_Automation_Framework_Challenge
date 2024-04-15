@@ -5,12 +5,9 @@ const { expect: expectWDIO } = require('@wdio/globals');
 
 class CartPage extends BasePage {
 
-    // Cart Page Locators.
     get checkoutButton() {
         return $('#checkout');
     }
-
-    // Cart Page Methods.
 
     // Verifies a comma-separated list of items is visible in the cart.
     async verifyItemsAdded(itemsList) {
@@ -24,7 +21,7 @@ class CartPage extends BasePage {
         }
     }
 
-    // Proceeds to start checkout process.
+    // Starts checkout process.
     async proceedToCheckout () {
         await this.checkoutButton.click();
     }

@@ -10,17 +10,18 @@ class PetApi extends BaseApi{
         this.serviceUrl = this.url;
     }
 
-    // Pet endpoints.
     async uploadImage(petId, imagePath) {
         try {
-            // Create a new FormData instance to hold the file data for upload.
+            // Create a new FormData instance to hold the data for upload.
             const form = new FormData();
 
             // Read the image file into a buffer.
             const imageBuffer = fs.readFileSync(imagePath);
             
-            // Append the file to the form data. 'file' is the field name expected by the API.
-            // The options object includes the filename and content type of the file.
+            // Append the file to the form data. 
+            // The options object includes:
+            // 'file' is the field name expected by the API.
+            //  'contentType' the type of the file.
             form.append('file', imageBuffer, {
                 filename: path.basename(imagePath),
                 contentType: 'image/jpeg',
@@ -57,7 +58,6 @@ class PetApi extends BaseApi{
         }
      }
 
-    // Method to update an existing pet.
     async updatePet(petData) {
         try {
             return await this.put(this.serviceUrl, petData);
@@ -117,7 +117,7 @@ class PetApi extends BaseApi{
     async ensurePetExists(petId, petData) {
         try {
             petData.id = parseInt(petId);
-            // Attempt to find the pet by ID
+
             const findResponse = await this.findPetById(petId);
 
             // If the pet is found or successfully retrieved, return the response
@@ -135,7 +135,6 @@ class PetApi extends BaseApi{
                 throw new Error(errorMessage);
             }
         } catch (error) {
-            // Log the error and return a failed response
             console.error(`Error in ensurePetExists: ${error.message}`, error);
             return { success: false, error: error.message };
         }

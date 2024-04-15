@@ -25,8 +25,6 @@ Then('the response body should reflect the placed order', function () {
     this.storeApi.compareOrderResponseWithOrderData();
 });
 
-//---
-// Assuming you have a CustomWorld that includes an instance of StoreApi
 Given('I ensure an order with {int} exists', async function(orderId) {
     this.response = await this.storeApi.ensureOrderIdExists(orderId, this.orderDetails);
 });
@@ -42,7 +40,6 @@ When('I delete the order by ID', async function() {
 Then('the response body should reflect the retrieved order', function() {
     const responseBody = this.response.data;
 
-    // Add additional assertions for the rest of the expected fields
     assert.strictEqual(responseBody.id, this.orderDetails.id);
     assert.strictEqual(responseBody.petId, this.orderDetails.petId);
     assert.strictEqual(responseBody.quantity, this.orderDetails.quantity);

@@ -13,7 +13,7 @@ Feature: Pet Services - Endpoint Tests
 
 
   Scenario Outline: POST - Add a new pet
-    When I add a new pet with <petId>, <name>, and <status>
+    Given I add a new pet with <petId>, <name>, and <status>
     Then the response code should be <responseCode>
     And the response message should confirm the image upload
 

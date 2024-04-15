@@ -1,5 +1,4 @@
 const { Given, When, Then } = require('@cucumber/cucumber');
-const path = require('path');
 
 Given(/^I have a collection of (.+)$/, function (usersCollection) {
     this.usersCollection = this.userApi.createUsersCollectionFromUserNames(usersCollection);

@@ -1,14 +1,11 @@
 const { Given, When, Then } = require('@wdio/cucumber-framework');
-const { expect, $ } = require('@wdio/globals')
+const LoginPage = require('../page-objects/login.page');
+const InventoryPage = require('../page-objects/inventory.page');
+const CartPage = require('../page-objects/cart.page');
+const CheckoutStepOnePage = require('../page-objects/checkoutStepOne.page');
+const CheckoutStepTwoPage = require('../page-objects/checkoutStepTwo.page');
+const CheckoutCompletePage = require('../page-objects/checkoutComplete.page');
 
-const LoginPage = require('../pageobjects/login.page');
-const InventoryPage = require('../pageobjects/inventory.page');
-const CartPage = require('../pageobjects/cart.page');
-const CheckoutStepOnePage = require('../pageobjects/checkoutStepOne.page');
-const CheckoutStepTwoPage = require('../pageobjects/checkoutStepTwo.page');
-const CheckoutCompletePage = require('../pageobjects/checkoutComplete.page');
-
-// Step definitions to connect cucumber Gherkin features to Page Object's funcitonality.
 Given('I am on the login page', async () => {
     await LoginPage.open();
 });

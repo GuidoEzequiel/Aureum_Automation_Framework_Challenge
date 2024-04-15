@@ -1,8 +1,3 @@
-const FormData = require('form-data');
-const path = require('path');
-const fs = require('fs');
-const qs = require('qs');
-const axios = require('axios');
 const BaseApi = require('./baseApi');
 const assert = require('assert');
 
@@ -12,7 +7,6 @@ class StoreApi extends BaseApi{
         this.serviceUrl = this.url;
     }
 
-    // Store endpoints.
     async getInventory() {
         try {
             return await this.get(`${this.serviceUrl}/inventory`);
@@ -39,7 +33,6 @@ class StoreApi extends BaseApi{
                 // Order not found, not an error in this workflow.
                 return { success: false, data: null, error: 'Order Id not found' };
             }
-            // Log other errors and return a failure response
             console.error("Error getting order by Id:", error.message);
             return { success: false, error: error.message };
         }
@@ -61,7 +54,7 @@ class StoreApi extends BaseApi{
     async ensureOrderIdExists(orderId, orderData) {
         try {
             orderData.id = orderId;
-            // Attempt to get order by ID
+
             const orderIdResponse = await this.getOrderById(orderId);
 
             // If the order id is found or successfully retrieved, return the response
@@ -79,7 +72,6 @@ class StoreApi extends BaseApi{
                 throw new Error(errorMessage);
             }
         } catch (error) {
-            // Log the error and return a failed response
             console.error(`Error in ensureOrderIdExists: ${error.message}`, error);
             return { success: false, error: error.message };
         }

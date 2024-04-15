@@ -1,11 +1,11 @@
 const axios = require('axios');
-const Environment = require('../environment/environment');
+const Environments = require('../environment/environments');
 const assert = require('assert');
 
 // Base Api object containing  methods, selectors and functionality that is shared across all Api objects
 class BaseApi {
     constructor(serviceFirm){
-        this.url = Environment.baseURL + serviceFirm;
+        this.url = Environments.baseURL + serviceFirm;
         this.createJsonHeader();
         this.createFormHeader();
     }

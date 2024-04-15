@@ -20,10 +20,8 @@ Given(/^a pet with (\d+)$/, async function (petId) {
     // Convert petId from string to integer.
     this.petData.id = parseInt(petId);
 
-    // Assuming there is a method to retrieve a pet by ID to check if it exists.
     this.response = await this.petApi.findPetById(petId);
 
-    // Store the pet object for later use.
     this.petData = this.response.data;
 });
  
@@ -32,11 +30,9 @@ Given(/^I ensure a pet with (\d+) exists$/, async function (petId) {
 });
   
 When(/^I update the pet (.+) and (.+)$/, async function (name, status) {
-    // Update the stored pet object with the new name and status. 
     this.petData.name = name;
     this.petData.status = status;
 
-    // Send the update request with the updated pet details.
     this.response = await this.petApi.updatePet(this.petData);
 });
 
@@ -72,7 +68,6 @@ When('I search for the pet ID', async function () {
 
 Then('I should receive the pet details', function () {
     assert.equal(this.response.status, 200, `Expected status code 200 but received ${this.response.status}`);
-    // Validate the pet details (additional validations can be added as needed)
     assert.equal(this.response.data.id, this.petData.id, `Expected pet ID to be ${this.petData.id} but received ${this.response.data.id}`);
 });
 

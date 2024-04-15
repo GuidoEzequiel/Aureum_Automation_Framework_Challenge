@@ -1,11 +1,4 @@
-const axios = require('axios');
-const FormData = require('form-data');
-const fs = require('fs');
-const path = require('path');
-const qs = require('qs');
 const BaseApi = require('./baseApi');
-const assert = require('assert');
-
 
 class UserApi extends BaseApi{
     constructor() {
@@ -13,17 +6,8 @@ class UserApi extends BaseApi{
         this.serviceUrl = this.url;
     }
 
-    // User endpoints
     async createUserWithList(userList) {
         try {
-            // Enconding to avoid URL query issues.
-            // const encodedUsers = userList.split(',').map(s => encodeURIComponent(s)).join(',');
-            // console.log("encodedUsers", encodedUsers);
-
-            // const response = await this.post(`${this.serviceUrl}/findByStatus`, {
-            //     params: { users: encodedUsers }
-            // });
-            
             const response = await this.post(`${this.serviceUrl}/createWithList`, userList);
             return response;
 
@@ -47,10 +31,8 @@ class UserApi extends BaseApi{
             return await this.jsonClient.get(`${this.serviceUrl}/${username}`);
         } catch (error) {
             if (error.response && error.response.status === 404) {
-                // User not found, not an error in this workflow.
                 return { success: false, data: null, error: 'User not found' };
             }
-            // Log other errors and return a failure response
             console.error("Error getting user by name:", error);
             return { success: false, error: error.message };
         }
@@ -111,13 +93,13 @@ class UserApi extends BaseApi{
     }
 
     createUsersCollectionFromUserNames(usernamesString) {
-         // Split the string into individual usernames.
+        // Split the string into individual usernames.
         const usernames = usernamesString.split(',');
         //Creates users list.
         return usernames.map((username, index) => {
             return {
-                id: index, // Incremental ID to provide different data.
-                username: username.trim(), // Trim whitespace.
+                id: index, // Incremental ID to provide unique data each pass.
+                username: username.trim(),
                 firstName: `Template FirstName${index}`,
                 lastName: `Template LastName${index}`,
                 email: `${username}${index}@example.com`,
@@ -142,12 +124,10 @@ class UserApi extends BaseApi{
             if (createResponse.success && createResponse.data) {
                 return createResponse;
             } else {
-                // Handle failure to get username.
                 const errorMessage = createResponse.error || 'Unknown error occurred while getting username';
                 throw new Error(errorMessage);
             }
         } catch (error) {
-            // Log the error and return a failed response.
             console.error(`Error in ensureUsernameExists: ${error.message}`, error);
             return { success: false, error: error.message };
         }
@@ -161,7 +141,6 @@ class UserApi extends BaseApi{
             email: updatedUserInfo.updatedEmail,
             password: updatedUserInfo.updatedPassword,
             phone: updatedUserInfo.updatedPhone,
-            // Add any additional fields that your API may require for a user update
         };
     }
 
@@ -183,7 +162,7 @@ class UserApi extends BaseApi{
         // Creates users array.
         return usernames.map((username, index) => {
             return {
-                id: index + 1, // Incremental ID to provide unique data.
+                id: index + 1, // Incremental ID to provide unique data each pass.
                 username: username.trim(),
                 firstName: `Template FirstName${index + 1}`,
                 lastName: `Template LastName${index + 1}`,
